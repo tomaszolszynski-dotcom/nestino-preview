@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nestino 2.0 — Prototyp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --n-bg:#080808;--n-surface:#111111;--n-surface2:#181818;--n-border:#222222;
+  --n-gold:#C9A84C;--n-gold-dim:#9a7a35;--n-white:#F0F0F0;--n-gray:#888888;
+  --n-gray2:#555555;--n-text:#D8D8D8;--n-font:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--n-bg);color:var(--n-text);font-family:var(--n-font);font-size:15px;line-height:1.7;overflow-x:hidden}
+.hero~*{position:relative;background:var(--n-bg);z-index:1}
+.top-bar{position:relative;z-index:101;background:rgba(8,8,8,0.85)}
+.page{max-width:1100px;margin:0 auto;padding:0 40px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.92);border-bottom:1px solid var(--n-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:120px;max-width:1100px;margin:0 auto;padding:0 40px}
+.nav-logo{display:flex;align-items:center;gap:0;text-decoration:none}
+.nav-logo svg{height:32px;width:auto}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--n-gray);text-decoration:none;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover{color:var(--n-white)}
+.nav-cta{background:transparent;border:1px solid var(--n-gold);color:var(--n-gold);padding:9px 20px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:var(--n-font)}
+.nav-cta:hover{background:var(--n-gold);color:#000}
+@media(max-width:768px){.nav-links{display:none}.nav-cta{padding:8px 14px;font-size:11px}}
+@media(max-width:640px){
+  .nav-inner{height:88px;padding:0 20px}
+  .nav-logo img{height:72px!important}
+  .page{padding:0 20px}
+  .hero-content{padding:72px 20px 60px}
+  .hero-eyebrow{margin-bottom:28px}
+  .hero-h1{margin-bottom:20px}
+  .hero-sub{font-size:16px;margin-bottom:40px}
+  .hero-paths{flex-direction:column;gap:10px;margin-bottom:56px}
+  .path-btn{width:100%;justify-content:center;padding:16px 20px}
+  .hero-stats{gap:28px;padding-top:36px}
+  .hero-stat-num{font-size:24px}
+  section{padding:72px 0}
+  .section-label{margin-bottom:36px}
+  .segment-card{padding:36px 24px}
+  .hero-dots{bottom:20px;right:20px}
+  .footer-inner{padding:0 20px;gap:36px}
+  .footer-bottom{padding:16px 20px 0}
+  .final-cta{padding:72px 20px}
+}
+
+/* HERO */
+.hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;opacity:0.03;background-image:linear-gradient(var(--n-white) 1px,transparent 1px),linear-gradient(90deg,var(--n-white) 1px,transparent 1px);background-size:80px 80px}
+.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:100px 40px 80px}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+.hero-eyebrow-line{width:40px;height:1px;background:var(--n-gold);flex-shrink:0}
+.hero-eyebrow-text{color:var(--n-gold);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500}
+.hero-h1{font-size:clamp(40px,7vw,82px);font-weight:300;line-height:1.06;color:var(--n-white);letter-spacing:-0.025em;margin-bottom:28px}
+.hero-h1 em{font-style:normal;color:var(--n-gold)}
+.hero-sub{font-size:18px;color:#fff;line-height:1.75;max-width:520px;margin-bottom:56px;font-weight:400;text-shadow:0 1px 8px rgba(0,0,0,0.7)}
+.hero-paths{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:80px}
+.path-btn{padding:15px 30px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.22s;font-family:var(--n-font);font-weight:500;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.path-btn.primary{background:var(--n-gold);color:#000}
+.path-btn.primary:hover{background:#dbb95a}
+.path-btn.secondary{background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.35);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.path-btn.secondary:hover{background:rgba(255,255,255,0.18);border-color:var(--n-gold);color:var(--n-gold)}
+/* Slideshow */
+.hero-slides{position:fixed;inset:0;z-index:0}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;background-size:cover;background-repeat:no-repeat}
+.hero-slide.active{opacity:1}
+.hero-dots{position:absolute;bottom:36px;right:44px;z-index:2;display:flex;gap:8px;align-items:center}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.30);cursor:pointer;transition:all 0.35s;border:none;padding:0}
+.hero-dot.active{background:var(--n-gold);width:22px;border-radius:3px}
+.hero-stats{display:flex;gap:56px;padding-top:48px;border-top:1px solid var(--n-border);flex-wrap:wrap;row-gap:28px}
+.hero-stat-num{font-size:30px;font-weight:300;color:var(--n-white);letter-spacing:-0.02em}
+.hero-stat-label{font-size:11px;color:var(--n-gray);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px}
+
+/* SECTIONS */
+section{padding:108px 0;border-bottom:1px solid var(--n-border)}
+.section-label{display:flex;align-items:center;gap:12px;margin-bottom:56px}
+.section-label-line{width:24px;height:1px;background:var(--n-gold);flex-shrink:0}
+.section-label-text{color:var(--n-gold);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500}
+.section-h2{font-size:clamp(30px,4.5vw,52px);font-weight:300;color:var(--n-white);letter-spacing:-0.025em;line-height:1.12;margin-bottom:20px}
+.section-sub{font-size:16px;color:var(--n-gray);max-width:560px;line-height:1.75}
+
+/* SEGMENTS */
+.segments-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--n-border);margin-top:64px}
+@media(max-width:768px){.segments-grid{grid-template-columns:1fr}}
+.segment-card{background:var(--n-surface);padding:48px 38px;cursor:pointer;transition:background 0.2s;position:relative}
+.segment-card:hover,.segment-card.active{background:var(--n-surface2)}
+.segment-card.active::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--n-gold)}
+.segment-num{font-size:11px;color:var(--n-gold-dim);letter-spacing:0.2em;margin-bottom:32px;font-weight:500;text-transform:uppercase}
+.segment-title{font-size:19px;font-weight:400;color:var(--n-white);margin-bottom:16px;line-height:1.35}
+.segment-desc{font-size:14px;color:var(--n-gray);line-height:1.75;margin-bottom:32px}
+.segment-cta{font-size:12px;color:var(--n-gold);letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;border:none;font-family:var(--n-font);font-weight:500;padding:0;transition:gap 0.2s;text-decoration:none}
+.segment-cta:hover{gap:14px}
+.franchise-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--n-gold-dim);border:1px solid var(--n-gold-dim);padding:4px 10px;margin-bottom:20px}
+
+/* PROBLEM */
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--n-border);margin-top:64px}
+@media(max-width:640px){.problem-grid{grid-template-columns:1fr}}
+.problem-item{background:var(--n-surface);padding:44px;display:flex;gap:24px}
+.problem-icon{width:42px;height:42px;flex-shrink:0;border:1px solid var(--n-border);display:flex;align-items:center;justify-content:center;color:var(--n-gold);font-size:18px}
+.problem-text-title{font-size:15px;font-weight:500;color:var(--n-white);margin-bottom:10px}
+.problem-text-desc{font-size:14px;color:var(--n-gray);line-height:1.75}
+
+/* SOLUTION */
+.solution-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:64px}
+@media(max-width:900px){.solution-layout{grid-template-columns:1fr}.solution-visual{display:none}}
+.solution-items{display:flex;flex-direction:column;gap:2px;background:var(--n-border)}
+.sol-item{padding:30px 32px;background:var(--n-surface);cursor:pointer;transition:background 0.2s;border-left:2px solid transparent}
+.sol-item:hover{background:var(--n-surface2)}
+.sol-item.active{background:var(--n-surface2);border-left-color:var(--n-gold)}
+.sol-item-tag{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--n-gold-dim);margin-bottom:10px;font-weight:500}
+.sol-item-title{font-size:16px;font-weight:500;color:var(--n-white);margin-bottom:8px}
+.sol-item-desc{font-size:14px;color:var(--n-gray);line-height:1.65}
+.solution-visual{background:var(--n-surface);border:1px solid var(--n-border);aspect-ratio:4/5;position:relative;overflow:hidden}
+.sv{position:absolute;inset:0;padding:40px;display:flex;flex-direction:column;justify-content:space-between;opacity:0;transition:opacity 0.35s}
+.sv.visible{opacity:1}
+.sv-header{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--n-gold-dim)}
+.sv-main{flex:1;display:flex;flex-direction:column;justify-content:center}
+.sv-time{font-size:56px;font-weight:300;color:var(--n-white);letter-spacing:-0.03em;margin-bottom:6px}
+.sv-subtitle{font-size:13px;color:var(--n-gray)}
+.sv-events{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+.sv-event{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--n-gray2)}
+.sv-event.on{color:var(--n-white)}
+.sv-dot{width:6px;height:6px;background:var(--n-border);border-radius:50%;flex-shrink:0}
+.sv-event.on .sv-dot{background:var(--n-gold)}
+.sv-footer{border-top:1px solid var(--n-border);padding-top:20px;font-size:12px;color:var(--n-gray2)}
+.bg-m{background:#0e0b04}.bg-w{background:#05080e}.bg-e{background:#0e0504}.bg-v{background:#050e07}
+
+/* PROCESS */
+.process-steps{margin-top:72px}
+.process-step{display:grid;grid-template-columns:88px 1fr;gap:32px;padding:44px 0;border-bottom:1px solid var(--n-border)}
+.process-step:last-child{border-bottom:none}
+.step-num{font-size:44px;font-weight:300;color:var(--n-border);letter-spacing:-0.02em}
+.step-tag{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--n-gold-dim);margin-bottom:12px;font-weight:500}
+.step-title{font-size:21px;font-weight:400;color:var(--n-white);margin-bottom:10px}
+.step-desc{font-size:14px;color:var(--n-gray);line-height:1.75;max-width:620px}
+.step-meta{font-size:12px;color:var(--n-gray2);margin-top:14px;letter-spacing:0.04em}
+
+/* REALIZACJE */
+.real-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--n-border);margin-top:64px}
+@media(max-width:768px){.real-grid{grid-template-columns:1fr}}
+.real-card{background:var(--n-surface);overflow:hidden;cursor:pointer;transition:background 0.2s;text-decoration:none;display:block}
+.real-card:hover{background:var(--n-surface2)}
+.real-card-img{height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.real-num{font-size:40px;font-weight:300;color:var(--n-gold);letter-spacing:-0.03em}
+.real-unit{font-size:10px;letter-spacing:0.15em;color:var(--n-gray2);text-transform:uppercase}
+.real-body{padding:30px}
+.real-type{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--n-gold-dim);margin-bottom:10px}
+.real-title{font-size:16px;font-weight:500;color:var(--n-white);margin-bottom:8px;line-height:1.35}
+.real-meta{font-size:13px;color:var(--n-gray);margin-bottom:18px}
+.real-link{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--n-gold)}
+
+/* TRUST */
+.trust-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:64px;align-items:start}
+@media(max-width:900px){.trust-layout{grid-template-columns:1fr}}
+.certs{display:flex;flex-direction:column;gap:1px;background:var(--n-border)}
+.cert-item{background:var(--n-surface);padding:26px 30px;display:flex;align-items:center;gap:18px}
+.cert-badge{width:50px;height:50px;border:1px solid var(--n-border);display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--n-gold-dim);flex-shrink:0;font-weight:700}
+.cert-name{font-size:14px;color:var(--n-white);font-weight:500;margin-bottom:3px}
+.cert-desc{font-size:12px;color:var(--n-gray);line-height:1.6}
+.showroom-card{margin-top:24px;padding:28px;background:var(--n-surface);border:1px solid var(--n-border)}
+.showroom-tag{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--n-gold-dim);margin-bottom:16px}
+.showroom-title{font-size:17px;color:var(--n-white);font-weight:400;margin-bottom:10px;line-height:1.5}
+.showroom-desc{font-size:13px;color:var(--n-gray);margin-bottom:22px}
+.testimonials{display:flex;flex-direction:column;gap:24px}
+.testimonial{padding:34px;background:var(--n-surface);border:1px solid var(--n-border)}
+.testimonial.featured{border-color:var(--n-gold-dim)}
+.t-quote{font-size:36px;color:var(--n-gold-dim);line-height:1;margin-bottom:14px;font-weight:300}
+.t-text{font-size:15px;color:var(--n-white);line-height:1.75;margin-bottom:20px;font-style:italic;font-weight:300}
+.t-author strong{color:var(--n-white);font-size:13px;font-weight:500;display:block;margin-bottom:2px}
+.t-author{font-size:12px;color:var(--n-gray)}
+.google-bar{padding:24px;background:var(--n-surface);border:1px solid var(--n-border);display:flex;align-items:center;justify-content:space-between}
+.stars{display:flex;gap:3px}
+.star{color:var(--n-gold);font-size:17px}
+
+/* CTA */
+.final-cta{text-align:center;padding:128px 0}
+.divider-gold{width:40px;height:1px;background:var(--n-gold);margin:0 auto 40px}
+.final-cta .section-h2{max-width:700px;margin:0 auto 20px}
+.final-cta .section-sub{max-width:480px;margin:0 auto 52px}
+.cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.btn-gold{background:var(--n-gold);color:#000;padding:17px 40px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;font-family:var(--n-font);transition:background 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-gold:hover{background:#dbb95a}
+.btn-outline{background:transparent;border:1px solid var(--n-border);color:var(--n-gray);padding:17px 40px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--n-font);transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-outline:hover{border-color:var(--n-gold);color:var(--n-gold)}
+.cta-note{font-size:12px;color:var(--n-gray2);letter-spacing:0.06em}
+
+/* FOOTER */
+footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:64px 0 40px}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1100px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.footer-inner{grid-template-columns:1fr 1fr}}
+.footer-brand{color:var(--n-white);font-size:14px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.footer-tagline{font-size:13px;color:var(--n-gray);margin-bottom:24px;font-style:italic}
+.footer-contact{font-size:13px;color:var(--n-gray);line-height:2}
+.footer-contact a{color:var(--n-gray);text-decoration:none;transition:color 0.2s}
+.footer-contact a:hover{color:var(--n-white)}
+.footer-col-title{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--n-gold-dim);margin-bottom:18px;font-weight:500}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:12px}
+.footer-links a{font-size:13px;color:var(--n-gray);text-decoration:none;transition:color 0.2s;display:inline-flex;align-items:center;gap:6px}
+.footer-links a:hover{color:var(--n-white)}
+.footer-bottom{max-width:1100px;margin:44px auto 0;padding:20px 40px 0;border-top:1px solid var(--n-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-legal{font-size:12px;color:var(--n-gray2)}
+
+/* DRAFT BANNER */
+.draft-banner{background:#1a1200;border-bottom:1px solid var(--n-gold-dim);padding:10px 40px;display:flex;align-items:center;justify-content:center;gap:12px}
+.draft-banner-text{font-size:12px;color:var(--n-gold-dim);letter-spacing:0.06em}
+.draft-banner-dot{width:6px;height:6px;background:var(--n-gold);border-radius:50%;flex-shrink:0}
+
+/* SVG ICONS inline */
+.ico{display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+
+<div class="draft-banner">
+  <div class="draft-banner-dot"></div>
+  <span class="draft-banner-text">Prototyp — Nestino 2.0 · Wersja do prezentacji · 2026-06-20</span>
+  <div class="draft-banner-dot"></div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <img src="logo.png" alt="Nestino" style="height:112px;width:auto;display:block;filter:invert(1) hue-rotate(180deg)">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#realizacje">Realizacje</a></li>
+      <li><a href="#proces">Jak działamy</a></li>
+      <li><a href="#showroom">Showroom</a></li>
+      <li><a href="#kontakt">O nas</a></li>
+    </ul>
+    <a class="nav-cta" href="#kontakt">Konsultacja</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <!-- Slideshow backgrounds -->
+  <div class="hero-slides" aria-hidden="true">
+    <div class="hero-slide active" style="background-image:url('basen.png');background-position:center 60%"></div>
+    <div class="hero-slide" style="background-image:url('salon.png');background-position:center center"></div>
+    <div class="hero-slide" style="background-image:url('front.png');background-position:center center"></div>
+    <div class="hero-slide" style="background-image:url('dom.png');background-position:center center"></div>
+  </div>
+  <!-- Gradients -->
+  <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(6,6,10,0.92) 0%,rgba(6,6,10,0.55) 48%,rgba(6,6,10,0.10) 100%);pointer-events:none"></div>
+  <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(6,6,10,0.0) 0%,rgba(6,6,10,0.0) 50%,rgba(6,6,10,1.0) 100%);pointer-events:none"></div>
+  <!-- Slide dots -->
+  <div class="hero-dots" role="tablist" aria-label="Zmiana tła">
+    <button class="hero-dot active" onclick="heroGoTo(0)" aria-label="Slajd 1"></button>
+    <button class="hero-dot" onclick="heroGoTo(1)" aria-label="Slajd 2"></button>
+    <button class="hero-dot" onclick="heroGoTo(2)" aria-label="Slajd 3"></button>
+    <button class="hero-dot" onclick="heroGoTo(3)" aria-label="Slajd 4"></button>
+  </div>
+  <div class="hero-content" style="position:relative;z-index:2">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Smart Home Premium · Kraków · od 2010</span>
+    </div>
+    <h1 class="hero-h1">Przyszłość domu<br>zaczyna się od<br><em>jednej decyzji.</em></h1>
+    <p class="hero-sub">Nestino projektuje i wdraża inteligentne przestrzenie dla klientów premium, wspiera architektów i buduje sieć lokalnych partnerów biznesowych.</p>
+    <div class="hero-paths">
+      <a class="path-btn primary" href="#sciezki">Buduję lub wykańczam dom</a>
+      <a class="path-btn secondary" href="#sciezki">Jestem architektem</a>
+      <a class="path-btn secondary" href="https://franczyza.nestino.pl" target="_blank" rel="noopener">
+        Szukam biznesu Smart Home
+        <svg class="ico" width="14" height="14" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">364</div><div class="hero-stat-label">Zrealizowanych projektów</div></div>
+      <div><div class="hero-stat-num">142</div><div class="hero-stat-label">Lata doświadczenia zespołu</div></div>
+      <div><div class="hero-stat-num">1</div><div class="hero-stat-label">Showroom w Maxliz · Kraków</div></div>
+      <div><div class="hero-stat-num">Grenton</div><div class="hero-stat-label">Premium · KNX · Loxone Gold</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEGMENTY -->
+<section id="sciezki">
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Twoja ścieżka</span></div>
+    <h2 class="section-h2">Dla kogo jest Nestino?</h2>
+    <p class="section-sub">Każdy projekt zaczyna się inaczej. Wybierz ścieżkę — dopasujemy rozmowę do Twojej sytuacji.</p>
+    <div class="segments-grid">
+      <div class="segment-card active" onclick="activateSeg(0,this)">
+        <div class="segment-num">01 / Klient premium</div>
+        <div class="segment-title">Chcę dom,&nbsp;który myśli za&nbsp;mnie.</div>
+        <div class="segment-desc">Budujesz lub wykańczasz dom powyżej 200 m²? Zaprojektujemy system dopasowany do Twojego stylu życia — od projektu elektrycznego po szkolenie domowników.</div>
+        <a class="segment-cta" href="#kontakt">Poznaj ofertę →</a>
+      </div>
+      <div class="segment-card" onclick="activateSeg(1,this)">
+        <div class="segment-num">02 / Architekt / projektant</div>
+        <div class="segment-title">Szukam partnera, który nie zepsuje mojego projektu.</div>
+        <div class="segment-desc">Dostarczamy specyfikacje techniczne, schematy elektryczne i wsparcie na budowie. Twoja wizja estetyczna pozostaje nienaruszona — instalacja jest niewidoczna.</div>
+        <a class="segment-cta" href="#kontakt">Program Partnerski →</a>
+      </div>
+      <div class="segment-card" onclick="activateSeg(2,this)">
+        <div class="segment-num">03 / Partner / franczyzobiorca</div>
+        <div class="franchise-badge">
+          <svg class="ico" width="11" height="11" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          franczyza.nestino.pl
+        </div>
+        <div class="segment-title">Chcę otworzyć Showroom w&nbsp;swoim regionie.</div>
+        <div class="segment-desc">Nestino działa w modelu partnerskim. Oddajemy Ci sprawdzony system operacyjny, certyfikowaną markę i 364 realizacje jako Twoje referencje od pierwszego dnia.</div>
+        <a class="segment-cta" href="https://franczyza.nestino.pl" target="_blank" rel="noopener">
+          Model partnerski →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section>
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Problem</span></div>
+    <h2 class="section-h2">Dom pełen urządzeń,<br>które nie rozmawiają ze sobą.</h2>
+    <p class="section-sub">Każdy system zainstalowany osobno. Każdy pilot do czegoś innego. Technologia, która miała pomagać — zaczęła przeszkadzać.</p>
+    <div class="problem-grid">
+      <div class="problem-item">
+        <div class="problem-icon">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+        </div>
+        <div>
+          <div class="problem-text-title">12 aplikacji, 0 integracji</div>
+          <div class="problem-text-desc">Alarm w jednej apce, klimatyzacja w drugiej, rolety w trzeciej. Żadna z nich nie wie o istnieniu pozostałych.</div>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div>
+          <div class="problem-text-title">„Czy zamknąłem garaż?"</div>
+          <div class="problem-text-desc">Wychodzisz z domu i przez godzinę zastanawiasz się. Nie wiesz. Nie możesz sprawdzić bez zawracania.</div>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div>
+          <div class="problem-text-title">Energia tracona bez powodu</div>
+          <div class="problem-text-desc">Ogrzewanie grzeje pusty dom. Światła świecą w opuszczonych pokojach. Rolety opuszczone przy słonecznym dniu.</div>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div>
+          <div class="problem-text-title">Instalator zniknął po robocie</div>
+          <div class="problem-text-desc">System zainstalowany, konfiguracja niejasna, serwis z innego województwa. Gwarancja na papierze, wsparcie w praktyce — żadne.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROZWIĄZANIE -->
+<section>
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Rozwiązanie</span></div>
+    <h2 class="section-h2">Jeden system.<br>Wszystko razem.</h2>
+    <p class="section-sub">Nestino integruje każde urządzenie w domu w jedną architekturę — sterowaną jednym panelem lub telefonem, działającą automatycznie.</p>
+    <div class="solution-layout">
+      <div class="solution-items">
+        <div class="sol-item active" onclick="activateSol(0)">
+          <div class="sol-item-tag">Rano · 07:00</div>
+          <div class="sol-item-title">Dom budzi się razem z Tobą</div>
+          <div class="sol-item-desc">Rolety unoszą się o 7:00. Temperatura wzrasta do 22°C. Kawa parzy się automatycznie.</div>
+        </div>
+        <div class="sol-item" onclick="activateSol(1)">
+          <div class="sol-item-tag">W pracy · 09:00–17:00</div>
+          <div class="sol-item-title">Dom wie, że jesteś poza nim</div>
+          <div class="sol-item-desc">Ogrzewanie obniżone do 18°C. Alarm aktywny. Bramy zamknięte. Widzisz wszystko na telefonie.</div>
+        </div>
+        <div class="sol-item" onclick="activateSol(2)">
+          <div class="sol-item-tag">Wieczorem · 19:00</div>
+          <div class="sol-item-title">Tryb wieczorny — jeden przycisk</div>
+          <div class="sol-item-desc">Oświetlenie przygasa do 30%. Rolety opadają. Muzyka włącza się w salonie.</div>
+        </div>
+        <div class="sol-item" onclick="activateSol(3)">
+          <div class="sol-item-tag">Na wakacjach · 14 dni</div>
+          <div class="sol-item-title">Dom wygląda jak zamieszkały</div>
+          <div class="sol-item-desc">Losowe zapalanie świateł. Monitoring aktywny. Pełna kontrola z każdego miejsca na świecie.</div>
+        </div>
+      </div>
+      <div class="solution-visual">
+        <div class="sv bg-m visible" id="sv0">
+          <div class="sv-header">Nestino · Scenariusz poranny</div>
+          <div class="sv-main">
+            <div class="sv-time">07:00</div>
+            <div class="sv-subtitle">Dobry ranek, Marcin.</div>
+            <div class="sv-events">
+              <div class="sv-event on"><div class="sv-dot"></div>Rolety podniesione — wschód słońca</div>
+              <div class="sv-event on"><div class="sv-dot"></div>Temperatura: 22°C — osiągnięta</div>
+              <div class="sv-event"><div class="sv-dot"></div>Ekspres AGD — gotowy</div>
+              <div class="sv-event"><div class="sv-dot"></div>Oświetlenie dzienne — aktywne</div>
+            </div>
+          </div>
+          <div class="sv-footer">Aktywnych scenariuszy: 47 · Bez Twojej ingerencji</div>
+        </div>
+        <div class="sv bg-w" id="sv1">
+          <div class="sv-header">Nestino · Tryb nieobecności</div>
+          <div class="sv-main">
+            <div class="sv-time">09:42</div>
+            <div class="sv-subtitle">Jesteś poza domem.</div>
+            <div class="sv-events">
+              <div class="sv-event on"><div class="sv-dot"></div>Ogrzewanie: 18°C — tryb eco</div>
+              <div class="sv-event on"><div class="sv-dot"></div>Alarm: aktywny</div>
+              <div class="sv-event on"><div class="sv-dot"></div>Brama garażowa: zamknięta ✓</div>
+              <div class="sv-event"><div class="sv-dot"></div>Zużycie energii: −34%</div>
+            </div>
+          </div>
+          <div class="sv-footer">Monitorujesz dom z Warszawy · 3G/WiFi</div>
+        </div>
+        <div class="sv bg-e" id="sv2">
+          <div class="sv-header">Nestino · Tryb wieczorny</div>
+          <div class="sv-main">
+            <div class="sv-time">19:15</div>
+            <div class="sv-subtitle">Dobry wieczór.</div>
+            <div class="sv-events">
+              <div class="sv-event on"><div class="sv-dot"></div>Oświetlenie: 30% — nastrój wieczorny</div>
+              <div class="sv-event on"><div class="sv-dot"></div>Rolety: opuszczone</div>
+              <div class="sv-event on"><div class="sv-dot"></div>Audio: salon — aktywne</div>
+              <div class="sv-event"><div class="sv-dot"></div>Temperatura: 21°C — komfort</div>
+            </div>
+          </div>
+          <div class="sv-footer">Wyzwolony przez: powrót do domu — detekcja</div>
+        </div>
+        <div class="sv bg-v" id="sv3">
+          <div class="sv-header">Nestino · Tryb wakacyjny</div>
+          <div class="sv-main">
+            <div class="sv-time">14 dni</div>
+            <div class="sv-subtitle">Jesteś w Barcelonie.</div>
+            <div class="sv-events">
+              <div class="sv-event on"><div class="sv-dot"></div>Symulacja obecności — aktywna</div>
+              <div class="sv-event on"><div class="sv-dot"></div>Monitoring 24/7 — aktywny</div>
+              <div class="sv-event"><div class="sv-dot"></div>Ostatni alert: 3 dni temu</div>
+              <div class="sv-event"><div class="sv-dot"></div>Zużycie energii: −58%</div>
+            </div>
+          </div>
+          <div class="sv-footer">Pełna kontrola · iOS · Android</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCES -->
+<section id="proces">
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Proces</span></div>
+    <h2 class="section-h2">Od pierwszej rozmowy<br>do działającego systemu.</h2>
+    <p class="section-sub">10 znormalizowanych procesów. Każdy projekt prowadzony tak samo — bo powtarzalność jest podstawą jakości.</p>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-num">01</div><div><div class="step-tag">Kontakt</div><div class="step-title">Bezpłatna konsultacja</div><div class="step-desc">Rozmawiamy o tym, jak mieszkasz, co Cię irytuje i czego oczekujesz. Bez technicznego żargonu. Zadajemy pytania o Twoje życie, nie o protokoły.</div><div class="step-meta">Czas: 45–60 minut · Telefon lub wizyta w showroomie</div></div></div>
+      <div class="process-step"><div class="step-num">02</div><div><div class="step-tag">Projekt</div><div class="step-title">Projekt techniczny i wizualizacja</div><div class="step-desc">Przygotowujemy projekt instalacji elektrycznej, schemat rozdzielnicy i wizualizację scenariuszy automatyzacji. Wszystko do akceptacji przed realizacją.</div><div class="step-meta">Czas: 1–2 tygodnie · Dokumentacja PDF + DWG</div></div></div>
+      <div class="process-step"><div class="step-num">03</div><div><div class="step-tag">Wycena</div><div class="step-title">Transparentna wycena pozycyjna</div><div class="step-desc">Otrzymujesz wycenę z rozpisanymi pozycjami — każde urządzenie, każda roboczogodzina. Bez ukrytych kosztów, bez niespodzianek na końcu.</div><div class="step-meta">Ważna 30 dni · Możliwość etapowania budżetu</div></div></div>
+      <div class="process-step"><div class="step-num">04</div><div><div class="step-tag">Realizacja</div><div class="step-title">Instalacja i programowanie</div><div class="step-desc">Instalujemy elektrykę, montujemy urządzenia, programujemy scenariusze i testujemy każdy punkt systemu. Koordynujemy z innymi ekipami na budowie.</div><div class="step-meta">Koordynator projektu przypisany od pierwszego dnia</div></div></div>
+      <div class="process-step"><div class="step-num">05</div><div><div class="step-tag">Szkolenie</div><div class="step-title">Przekazanie i szkolenie domowników</div><div class="step-desc">Pokazujemy jak obsługiwać każdy scenariusz — Tobie, żonie, dzieciom. Szkolenie jest częścią projektu, nie opcją dodatkową.</div><div class="step-meta">2–3 godziny · Nagranie wideo dla przyszłego przypomnienia</div></div></div>
+      <div class="process-step"><div class="step-num">06</div><div><div class="step-tag">Serwis</div><div class="step-title">Wsparcie po wdrożeniu</div><div class="step-desc">Jesteśmy dostępni po instalacji. 4 fizyczne biura w Polsce. Zdalny dostęp diagnostyczny. System ewoluuje razem z Twoimi potrzebami.</div><div class="step-meta">Gwarancja · Serwis pogwarancyjny · Rozbudowa systemu</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REALIZACJE -->
+<section id="realizacje">
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Realizacje</span></div>
+    <h2 class="section-h2">364 projekty.<br>Każdy inny.</h2>
+    <p class="section-sub">Od apartamentów po hotele, od domów 200 m² po osiedla deweloperskie. Każdy system projektowany od zera dla konkretnego życia.</p>
+    <div class="real-grid">
+      <a class="real-card" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">
+        <div class="real-card-img" style="background:#0f0f0a"><div class="real-num">380</div><div class="real-unit">m²</div></div>
+        <div class="real-body">
+          <div class="real-type">Dom prywatny · Kraków</div>
+          <div class="real-title">Dom rodzinny z pełną integracją Loxone</div>
+          <div class="real-meta">47 scenariuszy automatycznych · Loxone · 2024</div>
+          <div class="real-link">Zobacz projekt →</div>
+        </div>
+      </a>
+      <a class="real-card" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">
+        <div class="real-card-img" style="background:#080d14"><div class="real-num">28</div><div class="real-unit">apartamentów</div></div>
+        <div class="real-body">
+          <div class="real-type">Hotel butikowy · Kraków</div>
+          <div class="real-title">The Loft Hotel — automatyka 1000 m²</div>
+          <div class="real-meta">Audio-video multiroom · KNX · 2023</div>
+          <div class="real-link">Zobacz projekt →</div>
+        </div>
+      </a>
+      <a class="real-card" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">
+        <div class="real-card-img" style="background:#080a0d"><div class="real-num">1221</div><div class="real-unit">m² — max projekt</div></div>
+        <div class="real-body">
+          <div class="real-type">Osiedle deweloperskie · Małopolska</div>
+          <div class="real-title">Zielona Dolina — smart home dla dewelopera</div>
+          <div class="real-meta">Grenton Premium · Integracja BMS · Serwis stały</div>
+          <div class="real-link">Zobacz projekt →</div>
+        </div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a class="btn-outline" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">Zobacz wszystkie realizacje →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ZAUFANIE -->
+<section id="showroom">
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Zaufanie</span></div>
+    <h2 class="section-h2">Certyfikaty nie są dekoracją.<br>To nasza odpowiedzialność.</h2>
+    <div class="trust-layout">
+      <div>
+        <div class="certs">
+          <div class="cert-item"><div class="cert-badge">KNX</div><div><div class="cert-name">KNX Certified Partner</div><div class="cert-desc">Standard ISO/IEC 14543. Protokół przemysłowy. Twój system będzie działał za 20 lat.</div></div></div>
+          <div class="cert-item"><div class="cert-badge">LX</div><div><div class="cert-name">Loxone Gold Partner</div><div class="cert-desc">Najwyższy poziom partnerstwa Loxone w Polsce. Certyfikacja od 2022.</div></div></div>
+          <div class="cert-item"><div class="cert-badge">GR</div><div><div class="cert-name">Grenton Premium Partner</div><div class="cert-desc">Certyfikowany dystrybutor. Jedyny poziom Premium w regionie.</div></div></div>
+          <div class="cert-item"><div class="cert-badge">ISO</div><div><div class="cert-name">ISO 9001 (w trakcie wdrożenia)</div><div class="cert-desc">10 znormalizowanych procesów od oferty po szkolenie klienta.</div></div></div>
+        </div>
+        <div class="showroom-card">
+          <div class="showroom-tag">Showroom · Jedyny w Polsce</div>
+          <div class="showroom-title">Showroom w Maxliz w Krakowie. Przyjdź. Dotknij. Poczuj jak działa każdy scenariusz.</div>
+          <div class="showroom-desc">Nie musisz ufać katalogowi — możesz sprawdzić na własnych rękach.</div>
+          <a class="btn-gold" href="mailto:sales@nestino.pl?subject=Rezerwacja wizyty w showroomie">Zarezerwuj wizytę →</a>
+        </div>
+      </div>
+      <div class="testimonials">
+        <div class="testimonial featured">
+          <div class="t-quote">"</div>
+          <div class="t-text">Byłem sceptyczny — myślałem, że to kolejna zabawka która po roku przestanie działać. Dziś mój dom obsługuje 52 scenariusze automatycznie. Wracam wieczorem i wszystko jest gotowe. Nie wyobrażam sobie życia bez tego systemu.</div>
+          <div class="t-author"><strong>Marek K.</strong>Dom prywatny 420 m² · Kraków · System Loxone</div>
+        </div>
+        <div class="testimonial">
+          <div class="t-quote">"</div>
+          <div class="t-text">Jako architekt bałem się, że instalacja zepsuje projekt wnętrz. Nestino przeprowadził wszystko bezboleśnie — panele dobrane do palety kolorów, żadnego kabla na wierzchu. Klient zachwycony.</div>
+          <div class="t-author"><strong>Anna W.</strong>Architekt wnętrz · Pracownia AW Design · Kraków</div>
+        </div>
+        <div class="google-bar">
+          <div>
+            <div style="font-size:24px;font-weight:300;color:var(--n-white)">4,9 / 5</div>
+            <div style="font-size:12px;color:var(--n-gray);margin-top:4px">Ocena Google · 47 opinii</div>
+          </div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div id="kontakt" style="border-bottom:1px solid var(--n-border)">
+  <div class="final-cta page">
+    <div class="section-label" style="justify-content:center"><div class="section-label-line"></div><span class="section-label-text">Następny krok</span></div>
+    <div class="divider-gold"></div>
+    <h2 class="section-h2">Zacznijmy od rozmowy.</h2>
+    <p class="section-sub">Bezpłatna konsultacja. Bez zobowiązań. Odpowiemy na wszystkie pytania zanim cokolwiek zdecydujesz.</p>
+    <div class="cta-row">
+      <a class="btn-gold" href="mailto:sales@nestino.pl?subject=Bezplatna konsultacja Smart Home">Zamów bezpłatną konsultację</a>
+      <a class="btn-outline" href="mailto:sales@nestino.pl?subject=Rezerwacja showroom">Odwiedź showroom</a>
+      <a class="btn-outline" href="https://franczyza.nestino.pl" target="_blank" rel="noopener">
+        Franczyza
+        <svg class="ico" width="13" height="13" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+    <div class="cta-note">ul. Kocmyrzowska 23A, Kraków &nbsp;·&nbsp; (+48) 12 312 51 52 &nbsp;·&nbsp; sales@nestino.pl</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand" style="margin-bottom:8px">
+        <img src="logo.png" alt="Nestino" style="height:28px;width:auto;display:block;filter:invert(1) hue-rotate(180deg)">
+      </div>
+      <div class="footer-tagline">technologia szczęścia</div>
+      <div class="footer-contact">
+        <div>ul. Kocmyrzowska 23A, 31-765 Kraków</div>
+        <div>Showhome: Wysiółek Luborzycki 199</div>
+        <div><a href="tel:+48123125152">(+48) 12 312 51 52</a></div>
+        <div><a href="mailto:sales@nestino.pl">sales@nestino.pl</a></div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Ścieżki</div>
+      <ul class="footer-links">
+        <li><a href="#sciezki">Klient premium</a></li>
+        <li><a href="#sciezki">Architekt</a></li>
+        <li><a href="https://franczyza.nestino.pl" target="_blank" rel="noopener">Franczyza <svg class="ico" width="11" height="11" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Firma</div>
+      <ul class="footer-links">
+        <li><a href="#realizacje">Realizacje</a></li>
+        <li><a href="#proces">Jak działamy</a></li>
+        <li><a href="#showroom">Showroom</a></li>
+        <li><a href="https://nestino.pl/o-nas" target="_blank" rel="noopener">O Nestino</a></li>
+        <li><a href="https://nestino.pl/blog" target="_blank" rel="noopener">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Certyfikaty</div>
+      <ul class="footer-links">
+        <li><a href="#">KNX Certified</a></li>
+        <li><a href="#">Loxone Gold</a></li>
+        <li><a href="#">Grenton Premium</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal">© 2026 Nestino Sp. z o.o. Wszelkie prawa zastrzeżone.</div>
+    <div class="footer-legal">Polityka prywatności · Regulamin</div>
+  </div>
+</footer>
+
+<script>
+// Hero slideshow
+(function(){
+  var slides = document.querySelectorAll('.hero-slide');
+  var dots   = document.querySelectorAll('.hero-dot');
+  var cur = 0;
+  window.heroGoTo = function(n){
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
+  };
+  setInterval(function(){ heroGoTo((cur+1)%slides.length); }, 6000);
+})();
+
+function activateSeg(idx,el){
+  document.querySelectorAll('.segment-card').forEach(function(c,i){
+    c.classList.toggle('active',i===idx);
+  });
+}
+function activateSol(idx){
+  document.querySelectorAll('.sol-item').forEach(function(c,i){c.classList.toggle('active',i===idx)});
+  document.querySelectorAll('.sv').forEach(function(c,i){c.classList.toggle('visible',i===idx)});
+}
+
+/* -- HERO: NESTINO LUXURY SMART HOME -- SLOW CINEMATIC LOOP -- */
+(function(){
+  var cv = document.getElementById('hero-canvas');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var W, H, DPR = Math.min(window.devicePixelRatio||1, 2);
+
+  function resize(){
+    W = cv.offsetWidth; H = cv.offsetHeight;
+    cv.width = W*DPR; cv.height = H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+
+  /* Camera starts slightly left (-0.25 rad) so house sits right-of-center */
+  var ang = -0.25;
+  var CAM_R = 19, CAM_Y = -5.5, FOV = 580;
+
+  function cam(){ return {x:Math.sin(ang)*CAM_R, y:CAM_Y, z:Math.cos(ang)*CAM_R}; }
+
+  function proj(px,py,pz,c){
+    var dx=px-c.x, dy=py-c.y, dz=pz-c.z;
+    var ca=Math.cos(ang), sa=Math.sin(ang);
+    var rx=dx*ca-dz*sa, ry=dy, rz=dx*sa+dz*ca;
+    var tilt=0.19;
+    var ty=ry*Math.cos(tilt)-rz*Math.sin(tilt);
+    var tz=ry*Math.sin(tilt)+rz*Math.cos(tilt);
+    if(tz>-0.5) return null;
+    var VH=Math.min(H,window.innerHeight);
+    var f=FOV/(-tz);
+    return {x:W*0.60+rx*f, y:VH*0.32+ty*f, z:-tz};
+  }
+
+  function pv(v,c){ return proj(v[0],v[1],v[2],c); }
+
+  function face(verts,fill,edgeCol){
+    var pts=verts.map(function(v){return pv(v,_c);});
+    if(pts.some(function(p){return !p;})) return 1e9;
+    var avgZ=pts.reduce(function(s,p){return s+p.z;},0)/pts.length;
+    _rl.push({pts:pts,fill:fill,edge:edgeCol,z:avgZ});
+    return avgZ;
+  }
+
+  var _c,_rl;
+
+  function buildFaces(){
+    _rl=[];
+    face([[-30,0,-22],[30,0,-22],[30,0,22],[-30,0,22]],'#060608',null);
+    face([[-14,0.01,5],[14,0.01,5],[14,0.01,4.1],[-14,0.01,4.1]],'#101012',null);
+    face([[-15,0.02,4.1],[-8,0.02,4.1],[-8,0.02,3.6],[-15,0.02,3.6]],'#0D0D0F',null);
+    /* Pool */
+    face([[9,0.01,0],[17,0.01,0],[17,0.01,-6],[9,0.01,-6]],'#060E14',null);
+    face([[9,0.01,0],[17,0.01,0],[17,0.01,-6],[9,0.01,-6]],'rgba(8,28,45,0.85)',null);
+    /* Main house */
+    face([[-7,0,4],[7,0,4],[7,-6,4],[-7,-6,4]],'#22222A','rgba(80,85,110,0.45)');
+    face([[7,0,4],[7,0,-4],[7,-6,-4],[7,-6,4]],'#1C1C26','rgba(65,68,90,0.38)');
+    face([[-7,0,-4],[-7,0,4],[-7,-6,4],[-7,-6,-4]],'#18181E','rgba(50,52,70,0.28)');
+    face([[7,0,-4],[-7,0,-4],[-7,-6,-4],[7,-6,-4]],'#14141A',null);
+    face([[-7.7,-6,4.7],[7.7,-6,4.7],[7.7,-6,-4.7],[-7.7,-6,-4.7]],'#111116','rgba(45,48,65,0.3)');
+    face([[-7.7,-6,4.7],[7.7,-6,4.7],[7,-6,4],[-7,-6,4]],'#18181E',null);
+    face([[7.7,-6,4.7],[7.7,-6,-4.7],[7,-6,-4],[7,-6,4]],'#16161C',null);
+    /* Garage */
+    face([[-13,0,4],[-7,0,4],[-7,-3.8,4],[-13,-3.8,4]],'#1E1E26','rgba(65,68,88,0.38)');
+    face([[-13,0,1.5],[-13,0,4],[-13,-3.8,4],[-13,-3.8,1.5]],'#181820','rgba(50,52,68,0.28)');
+    face([[-13,-3.8,4],[-7,-3.8,4],[-7,-3.8,1.5],[-13,-3.8,1.5]],'#0E0E12',null);
+    face([[-13.4,-3.8,4.5],[-6.5,-3.8,4.5],[-6.5,-3.8,1.1],[-13.4,-3.8,1.1]],'#121216',null);
+    /* Upper storey right */
+    face([[0,0,4],[7,0,4],[7,-8.5,4],[0,-8.5,4]],'#252530','rgba(75,78,105,0.42)');
+    face([[7,0,4],[7,0,-4],[7,-8.5,-4],[7,-8.5,4]],'#1E1E2A','rgba(62,65,88,0.35)');
+    face([[7,-8.5,4],[7,-8.5,-4],[-7,-8.5,-4],[-7,-8.5,4]],'#0D0D12',null);
+    face([[0,-8.5,4],[7,-8.5,4],[7,-6,4],[0,-6,4]],'#111116',null);
+    /* Terrace */
+    face([[7,0,4],[14,0,4],[14,-0.2,4],[7,-0.2,4]],'#181820',null);
+    face([[7,-0.2,4],[14,-0.2,4],[14,-0.2,0.5],[7,-0.2,0.5]],'#161618',null);
+    face([[14,-0.2,4],[14,-1.0,4],[14,-1.0,0.5],[14,-0.2,0.5]],'#1C1C22',null);
+  }
+
+  /* Windows: warm amber + one cool blue (TV/screen) */
+  var wins=[
+    {cx:-4,   cy:-4.6, cz:4.01, w:2.5,h:1.9, nx:0,nz:1, on:true,  col:'warm'},
+    {cx:-0.8, cy:-4.6, cz:4.01, w:2.5,h:1.9, nx:0,nz:1, on:true,  col:'warm'},
+    {cx:2.8,  cy:-4.6, cz:4.01, w:2.5,h:1.9, nx:0,nz:1, on:false, col:'warm'},
+    {cx:-4.2, cy:-1.9, cz:4.01, w:4.5,h:1.6, nx:0,nz:1, on:true,  col:'warm'},
+    {cx:3.0,  cy:-1.9, cz:4.01, w:3.8,h:1.6, nx:0,nz:1, on:true,  col:'cool'},
+    {cx:2.0,  cy:-7.2, cz:4.01, w:4.2,h:1.5, nx:0,nz:1, on:true,  col:'warm'},
+    {cx:-3.5, cy:-7.2, cz:4.01, w:3.0,h:1.5, nx:0,nz:1, on:true,  col:'warm'},
+    {cx:7.01, cy:-4.8, cz:2.2,  w:2.0,h:2.4, nx:1,nz:0, on:true,  col:'warm'},
+    {cx:7.01, cy:-4.8, cz:-1.2, w:2.0,h:2.4, nx:1,nz:0, on:false, col:'warm'},
+    {cx:7.01, cy:-7.2, cz:1.0,  w:4.5,h:1.5, nx:1,nz:0, on:true,  col:'warm'},
+    {cx:-10,  cy:-1.7, cz:4.01, w:5.0,h:2.8, nx:0,nz:1, on:false, col:'dim',  dim:true},
+  ];
+
+  var wSt=wins.map(function(w){
+    return {b:w.on?0.52+Math.random()*0.32:0.04, ph:Math.random()*6.28, sp:0.12+Math.random()*0.2};
+  });
+
+  function drawWins(t){
+    wins.forEach(function(w,i){
+      var s=wSt[i];
+      var c=_c;
+      var vis=w.nx===0?(c.z>w.cz-0.8):(c.x>w.cx-0.5);
+      if(!vis) return;
+      var hw=w.w/2,hh=w.h/2;
+      var p1,p2,p3,p4;
+      if(w.nx===0){
+        p1=pv([w.cx-hw,w.cy-hh,w.cz],c); p2=pv([w.cx+hw,w.cy-hh,w.cz],c);
+        p3=pv([w.cx+hw,w.cy+hh,w.cz],c); p4=pv([w.cx-hw,w.cy+hh,w.cz],c);
+      } else {
+        p1=pv([w.cx,w.cy-hh,w.cz-hw],c); p2=pv([w.cx,w.cy-hh,w.cz+hw],c);
+        p3=pv([w.cx,w.cy+hh,w.cz+hw],c); p4=pv([w.cx,w.cy+hh,w.cz-hw],c);
+      }
+      if(!p1||!p2||!p3||!p4) return;
+      var br=w.on?Math.max(0.06,s.b+Math.sin(t*s.sp+s.ph)*0.035):s.b;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.lineTo(p4.x,p4.y);
+      ctx.closePath();
+      if(w.dim){
+        ctx.fillStyle='rgba(18,28,40,'+br+')';ctx.fill();
+      } else if(w.col==='cool'){
+        ctx.shadowColor='rgba(140,180,255,0.7)';ctx.shadowBlur=22;
+        ctx.fillStyle='rgba(180,210,255,'+br+')';ctx.fill();ctx.shadowBlur=0;
+        ctx.strokeStyle='rgba(160,200,255,0.2)';ctx.lineWidth=0.7;ctx.stroke();
+      } else {
+        ctx.shadowColor='rgba(255,195,55,0.85)';ctx.shadowBlur=28;
+        ctx.fillStyle='rgba(255,232,135,'+br+')';ctx.fill();ctx.shadowBlur=0;
+        ctx.strokeStyle='rgba(255,215,70,0.2)';ctx.lineWidth=0.7;ctx.stroke();
+      }
+      ctx.restore();
+    });
+  }
+
+  /* Blue LED accent strips on roof edges + garden path dots */
+  function drawLED(){
+    var c=_c;
+    function ledLine(a,b,col,alpha,blur,lw){
+      var pa=pv(a,c),pb=pv(b,c);
+      if(!pa||!pb) return;
+      ctx.save();ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.lineTo(pb.x,pb.y);
+      ctx.strokeStyle=col.replace('A',alpha);ctx.lineWidth=lw;
+      ctx.shadowColor=col.replace('A',0.9);ctx.shadowBlur=blur;
+      ctx.stroke();ctx.shadowBlur=0;ctx.restore();
+    }
+    ledLine([-7.7,-6,4.7],[7.7,-6,4.7],'rgba(90,145,255,A)',0.65,14,1.3);
+    ledLine([7.7,-6,4.7],[7.7,-6,-4.7],'rgba(90,145,255,A)',0.40,10,1.0);
+    ledLine([0,-8.5,4.7],[7.7,-8.5,4.7],'rgba(90,145,255,A)',0.55,12,1.1);
+    ledLine([-13.4,-3.8,4.5],[-6.5,-3.8,4.5],'rgba(90,145,255,A)',0.38,9,0.9);
+    /* Garden path LED dots */
+    [[-11,0.1,3.9],[-9,0.1,3.9],[-7,0.1,3.9]].forEach(function(pt){
+      var pp=pv(pt,c);
+      if(!pp) return;
+      ctx.save();ctx.beginPath();ctx.arc(pp.x,pp.y,pp.z<6?2.2:1.4,0,6.28);
+      ctx.fillStyle='rgba(255,200,80,0.7)';
+      ctx.shadowColor='rgba(255,180,60,0.9)';ctx.shadowBlur=8;
+      ctx.fill();ctx.shadowBlur=0;ctx.restore();
+    });
+  }
+
+  /* Pool with animated water reflection */
+  function drawPool(t){
+    var c=_c;
+    var p1=pv([9,0.01,0],c),p2=pv([17,0.01,0],c),p3=pv([17,0.01,-6],c),p4=pv([9,0.01,-6],c);
+    if(!p1||!p2||!p3||!p4) return;
+    ctx.save();ctx.beginPath();
+    ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.lineTo(p4.x,p4.y);
+    ctx.closePath();
+    ctx.fillStyle='rgba(8,35,58,0.9)';ctx.fill();
+    var waveY=Math.sin(t*0.55)*2;
+    var midX=(p1.x+p2.x)/2,midY=(p1.y+p2.y)/2+waveY;
+    var gr=ctx.createRadialGradient(midX,midY,2,midX,midY,Math.abs(p2.x-p1.x)*0.55);
+    gr.addColorStop(0,'rgba(80,140,220,0.30)');
+    gr.addColorStop(0.5,'rgba(40,90,160,0.14)');
+    gr.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gr;ctx.fill();
+    ctx.strokeStyle='rgba(60,120,200,0.28)';ctx.lineWidth=0.9;
+    ctx.shadowColor='rgba(50,110,200,0.45)';ctx.shadowBlur=7;
+    ctx.stroke();ctx.shadowBlur=0;ctx.restore();
+  }
+
+  /* Simple pine tree */
+  function drawTree(x,z,h){
+    var tip=pv([x,-h,z],_c),lr=pv([x-h*0.3,-h*0.28,z],_c),rr=pv([x+h*0.3,-h*0.28,z],_c);
+    var lm=pv([x-h*0.21,-h*0.52,z],_c),rm=pv([x+h*0.21,-h*0.52,z],_c);
+    var lb=pv([x-h*0.34,-h*0.05,z],_c),rb=pv([x+h*0.34,-h*0.05,z],_c);
+    if(!tip||!lr||!rr||!lm||!rm||!lb||!rb) return;
+    ctx.beginPath();ctx.moveTo(tip.x,tip.y);ctx.lineTo(lr.x,lr.y);ctx.lineTo(rr.x,rr.y);ctx.closePath();
+    ctx.fillStyle='rgba(6,14,8,0.88)';ctx.fill();
+    ctx.beginPath();ctx.moveTo(lm.x,lm.y);ctx.lineTo(lb.x,lb.y);ctx.lineTo(rb.x,rb.y);ctx.lineTo(rm.x,rm.y);ctx.closePath();
+    ctx.fillStyle='rgba(5,12,7,0.92)';ctx.fill();
+  }
+
+  /* Bokeh: blurred dark vegetation on left side (negative space for text) */
+  function drawBokeh(){
+    var bk=[
+      {rx:0.04,ry:0.55,r:W*0.10,a:0.76},{rx:0.11,ry:0.76,r:W*0.09,a:0.70},
+      {rx:0.02,ry:0.40,r:W*0.07,a:0.58},{rx:0.17,ry:0.88,r:W*0.11,a:0.66},
+      {rx:0.22,ry:0.68,r:W*0.08,a:0.50},{rx:0.07,ry:0.95,r:W*0.13,a:0.78},
+    ];
+    bk.forEach(function(b){
+      var grd=ctx.createRadialGradient(b.rx*W,b.ry*H,0,b.rx*W,b.ry*H,b.r);
+      grd.addColorStop(0,'rgba(3,7,4,'+b.a+')');
+      grd.addColorStop(1,'rgba(3,7,4,0)');
+      ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);
+    });
+  }
+
+  /* Sky with stars and moon glow */
+  var STARS=[];
+  for(var si=0;si<120;si++){
+    STARS.push({x:((si*137.508)%1),y:((si*93.7)%1)*0.60,r:((si*41.1)%1)*1.0+0.2,a:((si*29.7)%1)*0.5+0.1});
+  }
+
+  function drawSky(){
+    var g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#010106');g.addColorStop(0.5,'#03040C');g.addColorStop(1,'#060609');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    var nb=ctx.createRadialGradient(W*0.78,H*0.08,0,W*0.78,H*0.08,W*0.28);
+    nb.addColorStop(0,'rgba(40,55,100,0.06)');nb.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=nb;ctx.fillRect(0,0,W,H);
+    STARS.forEach(function(s){
+      ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,6.28);
+      ctx.fillStyle='rgba(255,255,255,'+s.a+')';ctx.fill();
+    });
+    ctx.save();
+    var mx=W*0.80,my=H*0.08;
+    var mg=ctx.createRadialGradient(mx,my,0,mx,my,28);
+    mg.addColorStop(0,'rgba(255,250,225,0.18)');mg.addColorStop(0.5,'rgba(255,248,210,0.09)');mg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=mg;ctx.fillRect(0,0,W,H);
+    ctx.beginPath();ctx.arc(mx,my,11,0,6.28);
+    ctx.fillStyle='rgba(255,250,225,0.22)';ctx.fill();
+    ctx.restore();
+  }
+
+  /* Warm glow under house + cool glow on facade */
+  function drawAmbient(){
+    var hc=pv([1,0.1,3],_c);
+    if(hc){
+      var ag=ctx.createRadialGradient(hc.x,hc.y,4,hc.x,hc.y,W*0.28);
+      ag.addColorStop(0,'rgba(255,170,45,0.07)');ag.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=ag;ctx.fillRect(0,0,W,H);
+    }
+    var fc=pv([0,-3,4.5],_c);
+    if(fc){
+      var fg=ctx.createRadialGradient(fc.x,fc.y,2,fc.x,fc.y,W*0.18);
+      fg.addColorStop(0,'rgba(80,120,220,0.05)');fg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=fg;ctx.fillRect(0,0,W,H);
+    }
+  }
+
+  var lastT=0;
+  function frame(ts){
+    var t=ts/1000,dt=Math.min(t-lastT,0.05);lastT=t;
+    /* Ultra-slow orbit: full revolution ~160 sec */
+    ang+=dt*0.039;
+
+    if(cv.offsetWidth!==W||cv.offsetHeight!==H) resize();
+    ctx.clearRect(0,0,W,H);
+
+    drawSky();
+
+    _c=cam();
+    buildFaces();
+
+    _rl.sort(function(a,b){return b.z-a.z;});
+    _rl.forEach(function(f){
+      ctx.beginPath();
+      ctx.moveTo(f.pts[0].x,f.pts[0].y);
+      f.pts.slice(1).forEach(function(p){ctx.lineTo(p.x,p.y);});
+      ctx.closePath();
+      ctx.fillStyle=f.fill;ctx.fill();
+      if(f.edge){ctx.strokeStyle=f.edge;ctx.lineWidth=0.6;ctx.stroke();}
+    });
+
+    drawPool(t);
+    drawWins(t);
+    drawLED();
+
+    drawTree(15,-3,5.8);drawTree(16.5,0,5.0);drawTree(18,-2,4.6);drawTree(13,4,4.0);
+    drawTree(-16,1,4.5);drawTree(-18,-2,5.2);drawTree(-14,-4,3.5);
+
+    drawAmbient();
+    drawBokeh();
+
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  requestAnimationFrame(frame);
+})();
+</script>
