@@ -51,15 +51,17 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.92);border-bottom:
 }
 .nav-mega:hover .nav-mega-arrow{transform:rotate(180deg)}
 .nav-mega-panel{
-  position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-8px);
+  position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(-8px);
   background:rgba(10,10,12,0.98);
   border:1px solid #1E1E1E;border-top:2px solid var(--n-gold);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  min-width:220px;padding:8px 0;
+  min-width:220px;padding:16px 0 8px;
   opacity:0;pointer-events:none;
   transition:opacity 0.2s,transform 0.2s;
   z-index:200;
 }
+
+.nav-mega-panel::before{content:'';position:absolute;top:-16px;left:0;right:0;height:16px;}
 .nav-mega:hover .nav-mega-panel,
 .nav-mega:focus-within .nav-mega-panel{
   opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)
