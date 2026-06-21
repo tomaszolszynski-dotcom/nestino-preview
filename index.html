@@ -24,7 +24,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.92);border-bottom:
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:120px;max-width:1100px;margin:0 auto;padding:0 40px}
 .nav-logo{display:flex;align-items:center;gap:0;text-decoration:none}
 .nav-logo svg{height:32px;width:auto}
-.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links{display:flex;gap:4px;list-style:none}
 .nav-links a{color:var(--n-gray);text-decoration:none;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s}
 .nav-links a:hover{color:var(--n-white)}
 .nav-cta{background:transparent;border:1px solid var(--n-gold);color:var(--n-gold);padding:9px 20px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:var(--n-font)}
@@ -228,9 +228,9 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
 /* ── MEGA MENU ─────────────────────────────────────────────── */
 .nav-mega{position:relative}
 .nav-mega-trigger{
-  color:var(--n-gray);text-decoration:none;font-size:13px;
+  color:var(--n-gray);text-decoration:none;font-size:11px;
   letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;
-  cursor:default;display:flex;align-items:center;gap:5px;padding:4px 0;
+  cursor:default;display:flex;align-items:center;gap:5px;padding:8px 10px;
   background:none;border:none;font-family:var(--n-font);
 }
 .nav-mega-trigger:hover,.nav-mega:hover .nav-mega-trigger{color:var(--n-white)}
@@ -406,7 +406,7 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
     <h1 class="hero-h1">Przyszłość domu<br>zaczyna się od<br><em>jednej decyzji.</em></h1>
     <p class="hero-sub">Nestino projektuje i wdraża inteligentne przestrzenie dla klientów premium, wspiera architektów i buduje sieć lokalnych partnerów biznesowych.</p>
     <div class="hero-paths">
-      <a class="path-btn primary" href="#sciezki">Buduję lub wykańczam dom</a>
+      <a class="path-btn primary" href="dla-domu/">Buduję lub wykańczam dom</a>
       <a class="path-btn secondary" href="#sciezki">Jestem architektem</a>
       <a class="path-btn secondary" href="https://franczyza.nestino.pl" target="_blank" rel="noopener">
         Szukam biznesu Smart Home
@@ -622,36 +622,36 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
     <h2 class="section-h2">364 projekty.<br>Każdy inny.</h2>
     <p class="section-sub">Od apartamentów po hotele, od domów 200 m² po osiedla deweloperskie. Każdy system projektowany od zera dla konkretnego życia.</p>
     <div class="real-grid">
-      <a class="real-card" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">
+      <a class="real-card" href="realizacje/">
         <div class="real-card-img" style="background:#0f0f0a"><div class="real-num">380</div><div class="real-unit">m²</div></div>
         <div class="real-body">
           <div class="real-type">Dom prywatny · Kraków</div>
           <div class="real-title">Dom rodzinny z pełną integracją Loxone</div>
           <div class="real-meta">47 scenariuszy automatycznych · Loxone · 2024</div>
-          <div class="real-link">Zobacz projekt →</div>
+          <div class="real-link">Zobacz szczegóły →</div>
         </div>
       </a>
-      <a class="real-card" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">
+      <a class="real-card" href="realizacje/">
         <div class="real-card-img" style="background:#080d14"><div class="real-num">28</div><div class="real-unit">apartamentów</div></div>
         <div class="real-body">
           <div class="real-type">Hotel butikowy · Kraków</div>
           <div class="real-title">The Loft Hotel — automatyka 1000 m²</div>
           <div class="real-meta">Audio-video multiroom · KNX · 2023</div>
-          <div class="real-link">Zobacz projekt →</div>
+          <div class="real-link">Zobacz szczegóły →</div>
         </div>
       </a>
-      <a class="real-card" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">
+      <a class="real-card" href="realizacje/">
         <div class="real-card-img" style="background:#080a0d"><div class="real-num">1221</div><div class="real-unit">m² — max projekt</div></div>
         <div class="real-body">
           <div class="real-type">Osiedle deweloperskie · Małopolska</div>
           <div class="real-title">Zielona Dolina — smart home dla dewelopera</div>
           <div class="real-meta">Grenton Premium · Integracja BMS · Serwis stały</div>
-          <div class="real-link">Zobacz projekt →</div>
+          <div class="real-link">Zobacz szczegóły →</div>
         </div>
       </a>
     </div>
     <div style="text-align:center;margin-top:40px">
-      <a class="btn-outline" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">Zobacz wszystkie realizacje →</a>
+      <a class="btn-outline" href="realizacje/">Zobacz wszystkie realizacje →</a>
     </div>
   </div>
 </section>
@@ -870,8 +870,8 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
       label: 'Dla domu',
       items: [
         { label: 'Inteligentny dom premium', href: '#dla-domu' },
-        { label: 'Buduję dom', href: '#sciezki' },
-        { label: 'Wykańczam dom', href: '#sciezki' },
+        { label: 'Buduję dom', href: 'dla-domu/' },
+        { label: 'Wykańczam dom', href: 'dla-domu/' },
         { label: 'Modernizuję dom', href: '#sciezki' },
         { label: 'Proces współpracy', href: '#proces' },
         { label: 'Showroom Nestino', href: '#showroom' },
@@ -893,14 +893,14 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
     {
       label: 'Realizacje',
       items: [
-        { label: 'Wszystkie realizacje', href: '#realizacje' },
+        { label: 'Wszystkie realizacje', href: 'realizacje/' },
         { label: 'Domy premium', href: '#realizacje' },
         { label: 'Apartamenty i rezydencje', href: '#realizacje' },
         { label: 'Opinie klientów', href: '#showroom' },
       ]
     },
     {
-      label: 'Dla architektów',
+      label: 'Architekci',
       items: [
         { label: 'Współpraca z architektami', href: '#sciezki' },
         { label: 'Koordynacja branżowa', href: '#sciezki' },

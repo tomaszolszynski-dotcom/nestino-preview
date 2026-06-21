@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Realizacje — Nestino Smart Home Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --n-bg:#080808;--n-surface:#111111;--n-surface2:#181818;--n-border:#222222;
+  --n-gold:#C9A84C;--n-gold-dim:#9a7a35;--n-white:#F0F0F0;--n-gray:#888888;
+  --n-gray2:#555555;--n-text:#D8D8D8;--n-font:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--n-bg);color:var(--n-text);font-family:var(--n-font);font-size:15px;line-height:1.7;overflow-x:hidden}
+.page{max-width:1100px;margin:0 auto;padding:0 40px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.92);border-bottom:1px solid var(--n-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:120px;max-width:1100px;margin:0 auto;padding:0 40px}
+.nav-logo{display:flex;align-items:center;gap:0;text-decoration:none}
+.nav-logo svg{height:32px;width:auto}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{color:var(--n-gray);text-decoration:none;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover{color:var(--n-white)}
+.nav-cta{background:transparent;border:1px solid var(--n-gold);color:var(--n-gold);padding:9px 20px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:var(--n-font);text-decoration:none;display:inline-block}
+.nav-cta:hover{background:var(--n-gold);color:#000}
+@media(max-width:768px){.nav-links{display:none}.nav-cta{padding:8px 14px;font-size:11px}}
+@media(max-width:640px){
+  .nav-inner{height:88px;padding:0 20px}
+  .nav-logo img{height:72px!important}
+  .page{padding:0 20px}
+}
+
+/* MEGA MENU */
+.nav-mega{position:relative}
+.nav-mega-trigger{
+  color:var(--n-gray);text-decoration:none;font-size:11px;
+  letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;
+  cursor:default;display:flex;align-items:center;gap:5px;padding:8px 10px;
+  background:none;border:none;font-family:var(--n-font);
+}
+.nav-mega-trigger:hover,.nav-mega:hover .nav-mega-trigger{color:var(--n-white)}
+.nav-mega-arrow{
+  width:0;height:0;
+  border-left:4px solid transparent;border-right:4px solid transparent;
+  border-top:4px solid currentColor;
+  display:inline-block;margin-top:1px;transition:transform 0.2s;flex-shrink:0;
+}
+.nav-mega:hover .nav-mega-arrow{transform:rotate(180deg)}
+.nav-mega-panel{
+  position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-8px);
+  background:rgba(10,10,12,0.98);
+  border:1px solid #1E1E1E;border-top:2px solid var(--n-gold);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  min-width:220px;padding:8px 0;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s,transform 0.2s;
+  z-index:200;
+}
+.nav-mega:hover .nav-mega-panel,
+.nav-mega:focus-within .nav-mega-panel{
+  opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)
+}
+.nav-mega-item{
+  display:block;padding:10px 22px;
+  color:#888;font-size:13px;text-decoration:none;
+  transition:color 0.15s,background 0.15s;white-space:nowrap;
+}
+.nav-mega-item:hover{color:#fff;background:rgba(255,255,255,0.04)}
+.nav-mega-item.ext::after{
+  content:'↗';font-size:10px;margin-left:6px;color:var(--n-gold-dim);vertical-align:super;
+}
+
+/* HAMBURGER + DRAWER */
+.nav-hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  cursor:pointer;padding:8px;background:none;border:none;
+}
+.nav-hamburger span{
+  width:22px;height:1.5px;background:var(--n-white);
+  transition:transform 0.3s,opacity 0.3s;display:block;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.nav-drawer{
+  position:fixed;inset:0;top:88px;
+  background:#080808;z-index:200;
+  overflow-y:auto;
+  transform:translateX(100%);
+  transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  border-top:1px solid var(--n-border);
+}
+.nav-drawer.open{transform:translateX(0)}
+.drawer-section{border-bottom:1px solid var(--n-border)}
+.drawer-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:18px 24px;
+  background:none;border:none;
+  color:var(--n-white);font-size:14px;letter-spacing:0.08em;
+  text-transform:uppercase;font-family:var(--n-font);cursor:pointer;
+  text-align:left;
+}
+.drawer-toggle-arrow{
+  width:0;height:0;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:5px solid var(--n-gray);transition:transform 0.25s;
+}
+.drawer-section.open .drawer-toggle-arrow{transform:rotate(180deg)}
+.drawer-panel{display:none;padding:0 0 8px}
+.drawer-section.open .drawer-panel{display:block}
+.drawer-link{
+  display:block;padding:11px 24px 11px 36px;
+  color:var(--n-gray);font-size:13px;text-decoration:none;
+  transition:color 0.15s;
+}
+.drawer-link:hover{color:var(--n-white)}
+.drawer-link.ext::after{content:' ↗';font-size:11px;color:var(--n-gold-dim)}
+.drawer-cta-row{padding:24px;display:flex;flex-direction:column;gap:12px}
+.drawer-cta-btn{
+  display:block;text-align:center;padding:14px 20px;
+  font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+  font-family:var(--n-font);text-decoration:none;transition:all 0.2s;
+}
+.drawer-cta-btn.gold{background:var(--n-gold);color:#000}
+.drawer-cta-btn.outline{border:1px solid var(--n-border);color:var(--n-gray)}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+}
+
+/* DRAFT BANNER */
+.draft-banner{background:#1a1200;border-bottom:1px solid var(--n-gold-dim);padding:10px 40px;display:flex;align-items:center;justify-content:center;gap:12px}
+.draft-banner-text{font-size:12px;color:var(--n-gold-dim);letter-spacing:0.06em}
+.draft-banner-dot{width:6px;height:6px;background:var(--n-gold);border-radius:50%;flex-shrink:0}
+
+/* HERO */
+.page-hero{padding:100px 0 72px;border-bottom:1px solid var(--n-border)}
+.section-label{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.section-label-line{width:24px;height:1px;background:var(--n-gold);flex-shrink:0}
+.section-label-text{color:var(--n-gold);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500}
+.page-h1{font-size:clamp(36px,5vw,64px);font-weight:300;color:var(--n-white);letter-spacing:-0.025em;line-height:1.1;margin-bottom:16px}
+.page-sub{font-size:17px;color:var(--n-gray);max-width:560px;line-height:1.75}
+
+/* FILTRY */
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding:36px 0}
+.filter-btn{padding:8px 20px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid var(--n-border);background:transparent;color:var(--n-gray);font-family:var(--n-font);transition:all 0.2s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--n-gold);color:var(--n-gold);background:rgba(201,168,76,0.06)}
+
+/* KARTY REALIZACJI */
+.real-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--n-border);margin-bottom:1px}
+@media(max-width:768px){.real-grid{grid-template-columns:1fr}}
+.real-card{background:var(--n-surface);overflow:hidden;transition:background 0.2s}
+.real-card:hover{background:var(--n-surface2)}
+.real-img{height:260px;overflow:hidden;position:relative;background:var(--n-surface2)}
+.real-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s}
+.real-card:hover .real-img img{transform:scale(1.03)}
+.real-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--n-gray2);font-size:12px;letter-spacing:0.1em;text-transform:uppercase}
+.real-badge{position:absolute;top:16px;left:16px;background:rgba(8,8,8,0.85);border:1px solid var(--n-gold-dim);color:var(--n-gold-dim);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;padding:4px 10px;font-weight:500}
+.real-body{padding:36px}
+.real-type{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--n-gold-dim);margin-bottom:10px}
+.real-title{font-size:20px;font-weight:400;color:var(--n-white);margin-bottom:8px;line-height:1.3}
+.real-meta{font-size:13px;color:var(--n-gray);margin-bottom:18px}
+.real-desc{font-size:14px;color:var(--n-gray);line-height:1.75;margin-bottom:20px}
+.real-systems{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:0}
+.real-systems li{font-size:13px;color:var(--n-gray2);padding-left:16px;position:relative}
+.real-systems li::before{content:'·';position:absolute;left:0;color:var(--n-gold-dim)}
+
+/* CTA SEKCJA */
+.cta-section{padding:80px 0;text-align:center;border-top:1px solid var(--n-border)}
+.section-h2{font-size:clamp(28px,4vw,44px);font-weight:300;color:var(--n-white);letter-spacing:-0.025em;line-height:1.15;margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--n-gray);max-width:480px;margin:0 auto 44px;line-height:1.75}
+.cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-gold{background:var(--n-gold);color:#000;padding:16px 36px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;font-family:var(--n-font);transition:background 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-gold:hover{background:#dbb95a}
+.btn-outline{background:transparent;border:1px solid var(--n-border);color:var(--n-gray);padding:16px 36px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--n-font);transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-outline:hover{border-color:var(--n-gold);color:var(--n-gold)}
+
+/* ICO */
+.ico{display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* FOOTER */
+footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:64px 0 40px}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1100px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.footer-inner{grid-template-columns:1fr 1fr}}
+.footer-brand{color:var(--n-white);font-size:14px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.footer-tagline{font-size:13px;color:var(--n-gray);margin-bottom:24px;font-style:italic}
+.footer-contact{font-size:13px;color:var(--n-gray);line-height:2}
+.footer-contact a{color:var(--n-gray);text-decoration:none;transition:color 0.2s}
+.footer-contact a:hover{color:var(--n-white)}
+.footer-col-title{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--n-gold-dim);margin-bottom:18px;font-weight:500}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:12px}
+.footer-links a{font-size:13px;color:var(--n-gray);text-decoration:none;transition:color 0.2s;display:inline-flex;align-items:center;gap:6px}
+.footer-links a:hover{color:var(--n-white)}
+.footer-bottom{max-width:1100px;margin:44px auto 0;padding:20px 40px 0;border-top:1px solid var(--n-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-legal{font-size:12px;color:var(--n-gray2)}
+</style>
+</head>
+<body>
+
+<div class="draft-banner">
+  <div class="draft-banner-dot"></div>
+  <span class="draft-banner-text">Prototyp — Nestino 2.0 · Wersja do prezentacji · 2026-06-20</span>
+  <div class="draft-banner-dot"></div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../">
+      <img src="../logo.png" alt="Nestino" style="height:112px;width:auto;display:block;filter:invert(1) hue-rotate(180deg)">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <!-- Mega menu generowane przez JS -->
+    </ul>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a class="nav-cta" href="mailto:nestino@nestino.pl">Konsultacja</a>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-drawer" id="navDrawer" aria-hidden="true"></div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Portfolio</span></div>
+    <h1 class="page-h1">Wybrane realizacje</h1>
+    <p class="page-sub">364+ ukończone projekty — domy, apartamenty, hotele i osiedla premium.</p>
+  </div>
+</section>
+
+<!-- FILTRY -->
+<div class="page">
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterReal(this,'all')">Wszystkie</button>
+    <button class="filter-btn" onclick="filterReal(this,'dom')">Domy</button>
+    <button class="filter-btn" onclick="filterReal(this,'apartament')">Apartamenty</button>
+    <button class="filter-btn" onclick="filterReal(this,'hotel')">Hotele</button>
+    <button class="filter-btn" onclick="filterReal(this,'osiedle')">Osiedla</button>
+  </div>
+</div>
+
+<!-- KARTY REALIZACJI -->
+<div class="page" style="padding-bottom:80px">
+  <div class="real-grid">
+
+    <!-- Karta 1: Dom ul. Sidzińska -->
+    <div class="real-card" data-type="dom">
+      <div class="real-img">
+        <div class="real-img-placeholder">
+          <svg style="opacity:0.3" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Zdjęcie realizacji</span>
+        </div>
+        <div class="real-badge">Dom</div>
+      </div>
+      <div class="real-body">
+        <div class="real-type">Dom prywatny · Kraków</div>
+        <div class="real-title">Dom ul. Sidzińska, Kraków</div>
+        <div class="real-meta">200 m² · System Grenton · 2023</div>
+        <div class="real-desc">Kompleksowa integracja inteligentnego domu w budynku jednorodzinnym 200 m². Projekt obejmował pełną automatyzację oświetlenia wewnętrznego i zewnętrznego z nastrojami, sterowanie rekuperacją oraz systemem bezpieczeństwa. Wszystkie elementy połączone w jeden intuicyjny panel sterowania.</div>
+        <ul class="real-systems">
+          <li>Oświetlenie wewnętrzne i zewnętrzne z nastrojami</li>
+          <li>Rekuperacja — sterowanie automatyczne</li>
+          <li>Bramy, furtka i drzwi wejściowe</li>
+          <li>Rolety i markizy</li>
+          <li>Monitoring i videodomofon</li>
+          <li>Sieć LAN</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Karta 2: Dom ul. Grębałowska -->
+    <div class="real-card" data-type="dom">
+      <div class="real-img">
+        <div class="real-img-placeholder">
+          <svg style="opacity:0.3" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Zdjęcie realizacji</span>
+        </div>
+        <div class="real-badge">Dom</div>
+      </div>
+      <div class="real-body">
+        <div class="real-type">Dom prywatny · Kraków</div>
+        <div class="real-title">Dom ul. Grębałowska, Kraków</div>
+        <div class="real-meta">300 m² · System Grenton Premium · 2024</div>
+        <div class="real-desc">Rozbudowana instalacja Smart Home w domu 300 m² z pełną integracją systemu alarmowego, automatyki ogrodu i multiroom audio-video. Kamery i videodomofon dostępne z poziomu smartfonu w każdym miejscu na świecie. Nastroje oświetleniowe dopasowane do każdej sytuacji, w tym tryb kina domowego.</div>
+        <ul class="real-systems">
+          <li>Automatyczne nawadnianie ogrodu</li>
+          <li>System alarmowy zintegrowany z roletami i bramą</li>
+          <li>Klimatyzacja — sterowanie strefowe</li>
+          <li>Rekuperacja</li>
+          <li>Audio-video multiroom</li>
+          <li>Kamery i videodomofon — dostęp przez smartfon</li>
+          <li>Nastroje oświetleniowe (film, relaks, praca)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Karta 3: The Loft Hotel -->
+    <div class="real-card" data-type="hotel">
+      <div class="real-img">
+        <div class="real-img-placeholder">
+          <svg style="opacity:0.3" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Zdjęcie realizacji</span>
+        </div>
+        <div class="real-badge">Hotel</div>
+      </div>
+      <div class="real-body">
+        <div class="real-type">Hotel butikowy · Kraków</div>
+        <div class="real-title">The Loft Hotel, ul. Dietla 113, Kraków</div>
+        <div class="real-meta">28 apartamentów · ponad 1000 m² · KNX · 2023</div>
+        <div class="real-desc">Największa instalacja hotelowa Nestino — 28 apartamentów w butikowym hotelu w centrum Krakowa. Smartfon gościa pełni rolę klucza i narzędzia do sterowania każdym elementem pokoju. System zarządzania obecnością automatycznie reguluje klimatyzację i oświetlenie po wyjściu gościa, redukując zużycie energii o ponad 30%.</div>
+        <ul class="real-systems">
+          <li>Oświetlenie — nastroje świetlne dla każdego apartamentu</li>
+          <li>Rolety — sterowanie indywidualne i grupowe</li>
+          <li>Klimatyzacja — kontrola obecności gości</li>
+          <li>Smartfon jako klucz do pokoju</li>
+          <li>System KNX — standard przemysłowy</li>
+          <li>Centralne zarządzanie dla obsługi hotelu</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Karta 4: Osiedle Zielona Dolina -->
+    <div class="real-card" data-type="osiedle">
+      <div class="real-img">
+        <div class="real-img-placeholder">
+          <svg style="opacity:0.3" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          <span>Zdjęcie realizacji</span>
+        </div>
+        <div class="real-badge">Osiedle</div>
+      </div>
+      <div class="real-body">
+        <div class="real-type">Osiedle deweloperskie · Mników k. Krakowa</div>
+        <div class="real-title">Osiedle Zielona Dolina, Mników</div>
+        <div class="real-meta">1025 m² łącznej powierzchni · Smart Ready® · Grenton Premium</div>
+        <div class="real-desc">Projekt deweloperski w standardzie Smart Ready® — każdy dom w osiedlu przygotowany do pełnej automatyzacji od fundamentów. Nestino pełniło rolę głównego integratora systemów, koordynując instalację z elektryczną, hydrauliczną i budowlaną. Stały serwis i monitoring wszystkich instalacji w ramach umowy deweloperskiej.</div>
+        <ul class="real-systems">
+          <li>Rolety zewnętrzne — sterowanie grupowe</li>
+          <li>Bramy garażowe i wjazdowe</li>
+          <li>Ogrzewanie podłogowe — strefowe zarządzanie</li>
+          <li>Rekuperacja — automatyczna wentylacja</li>
+          <li>System alarmowy dla każdego domu</li>
+          <li>Grenton Premium — platforma centralna</li>
+          <li>Stały serwis i monitoring w umowie</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="page">
+    <div class="section-label" style="justify-content:center"><div class="section-label-line"></div><span class="section-label-text">Następny krok</span></div>
+    <h2 class="section-h2">Porozmawiaj o swoim projekcie</h2>
+    <p class="section-sub">Każdy projekt zaczynamy od rozmowy o Twoim życiu, nie o technologii. Bezpłatna konsultacja bez zobowiązań.</p>
+    <div class="cta-row">
+      <a class="btn-gold" href="mailto:nestino@nestino.pl">Napisz do nas</a>
+      <a class="btn-outline" href="../index.html">Wróć do strony głównej</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand" style="margin-bottom:8px">
+        <img src="../logo.png" alt="Nestino" style="height:28px;width:auto;display:block;filter:invert(1) hue-rotate(180deg)">
+      </div>
+      <div class="footer-tagline">technologia szczęścia</div>
+      <div class="footer-contact">
+        <div>ul. Kocmyrzowska 23A, 31-765 Kraków</div>
+        <div>Showhome: Wysiółek Luborzycki 199</div>
+        <div><a href="tel:+48123125152">(+48) 12 312 51 52</a></div>
+        <div><a href="mailto:sales@nestino.pl">sales@nestino.pl</a></div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Ścieżki</div>
+      <ul class="footer-links">
+        <li><a href="../dla-domu/">Inteligentny dom premium</a></li>
+        <li><a href="../#sciezki">Klient premium</a></li>
+        <li><a href="../#sciezki">Architekt</a></li>
+        <li><a href="https://franczyza.nestino.pl" target="_blank" rel="noopener">Franczyza <svg class="ico" width="11" height="11" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Firma</div>
+      <ul class="footer-links">
+        <li><a href="../realizacje/">Realizacje</a></li>
+        <li><a href="../#proces">Jak działamy</a></li>
+        <li><a href="../#showroom">Showroom</a></li>
+        <li><a href="../#faq">FAQ</a></li>
+        <li><a href="../#o-nestino">O Nestino</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Rozwiązania</div>
+      <ul class="footer-links">
+        <li><a href="https://nestino.pl/rozwiazania/inteligentne-oswietlenie/" target="_blank" rel="noopener">Oświetlenie</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/automatyczne-rolety/" target="_blank" rel="noopener">Rolety i żaluzje</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/alarm-i-monitoring/" target="_blank" rel="noopener">Alarm i monitoring</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/inteligentne-ogrzewanie-i-klimatyzacja/" target="_blank" rel="noopener">Ogrzewanie</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/multimedia-i-agd/" target="_blank" rel="noopener">Multimedia</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/inteligentny-ogrod/" target="_blank" rel="noopener">Ogród</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal">© 2026 Nestino Sp. z o.o. Wszelkie prawa zastrzeżone.</div>
+    <div class="footer-legal">Polityka prywatności · Regulamin</div>
+  </div>
+</footer>
+
+<script>
+/* MEGA MENU */
+(function(){
+  var MENU = [
+    {
+      label: 'Dla domu',
+      items: [
+        { label: 'Inteligentny dom premium', href: '../#dla-domu' },
+        { label: 'Buduję dom', href: '../dla-domu/' },
+        { label: 'Wykańczam dom', href: '../dla-domu/' },
+        { label: 'Modernizuję dom', href: '../#sciezki' },
+        { label: 'Proces współpracy', href: '../#proces' },
+        { label: 'Showroom Nestino', href: '../#showroom' },
+        { label: 'FAQ inwestora', href: '../#faq' },
+      ]
+    },
+    {
+      label: 'Rozwiązania',
+      items: [
+        { label: 'Sterowanie oświetleniem', href: 'https://nestino.pl/rozwiazania/inteligentne-oswietlenie/', external: true },
+        { label: 'Rolety, żaluzje i bramy', href: 'https://nestino.pl/rozwiazania/automatyczne-rolety/', external: true },
+        { label: 'Alarm i monitoring', href: 'https://nestino.pl/rozwiazania/alarm-i-monitoring/', external: true },
+        { label: 'Ogrzewanie i klimatyzacja', href: 'https://nestino.pl/rozwiazania/inteligentne-ogrzewanie-i-klimatyzacja/', external: true },
+        { label: 'Wentylacja i rekuperacja', href: 'https://nestino.pl/rozwiazania/wentylacja-i-rekuperacja/', external: true },
+        { label: 'Multimedia i audio', href: 'https://nestino.pl/rozwiazania/multimedia-i-agd/', external: true },
+        { label: 'Ogród i nawadnianie', href: 'https://nestino.pl/rozwiazania/inteligentny-ogrod/', external: true },
+      ]
+    },
+    {
+      label: 'Realizacje',
+      items: [
+        { label: 'Wszystkie realizacje', href: '../realizacje/' },
+        { label: 'Domy premium', href: '../realizacje/' },
+        { label: 'Apartamenty i rezydencje', href: '../realizacje/' },
+        { label: 'Opinie klientów', href: '../#showroom' },
+      ]
+    },
+    {
+      label: 'Architekci',
+      items: [
+        { label: 'Współpraca z architektami', href: '../#sciezki' },
+        { label: 'Koordynacja branżowa', href: '../#sciezki' },
+        { label: 'Materiały dla architekta', href: '../#materialy' },
+        { label: 'Umów rozmowę projektową', href: 'mailto:nestino@nestino.pl' },
+      ]
+    },
+    {
+      label: 'Franczyza',
+      items: [
+        { label: 'Model franczyzowy Nestino', href: 'https://franczyza.nestino.pl', external: true },
+        { label: 'Dla kogo jest franczyza', href: '../#sciezki' },
+        { label: 'Showroom w swoim regionie', href: '../#sciezki' },
+        { label: 'Zgłoś się do rozmowy', href: 'mailto:nestino@nestino.pl' },
+      ]
+    },
+    {
+      label: 'Materiały',
+      items: [
+        { label: 'Blog', href: '../#blog' },
+        { label: 'Poradniki Smart Home', href: 'https://nestino.pl/blog/', external: true },
+        { label: 'FAQ', href: '../#faq' },
+        { label: 'O Nestino', href: '../#o-nestino' },
+      ]
+    },
+  ];
+
+  var navLinks = document.getElementById('navLinks');
+  MENU.forEach(function(cat) {
+    var li = document.createElement('li');
+    li.className = 'nav-mega';
+    var btn = document.createElement('button');
+    btn.className = 'nav-mega-trigger';
+    btn.innerHTML = cat.label + '<span class="nav-mega-arrow"></span>';
+    btn.setAttribute('aria-haspopup','true');
+    btn.setAttribute('aria-expanded','false');
+    var panel = document.createElement('div');
+    panel.className = 'nav-mega-panel';
+    panel.setAttribute('role','menu');
+    cat.items.forEach(function(item) {
+      var a = document.createElement('a');
+      a.className = 'nav-mega-item' + (item.external ? ' ext' : '');
+      a.href = item.href;
+      a.textContent = item.label;
+      if (item.external) { a.target = '_blank'; a.rel = 'noopener'; }
+      a.setAttribute('role','menuitem');
+      panel.appendChild(a);
+    });
+    li.appendChild(btn);
+    li.appendChild(panel);
+    navLinks.appendChild(li);
+  });
+
+  var drawer = document.getElementById('navDrawer');
+  MENU.forEach(function(cat) {
+    var sec = document.createElement('div');
+    sec.className = 'drawer-section';
+    var toggle = document.createElement('button');
+    toggle.className = 'drawer-toggle';
+    toggle.innerHTML = cat.label + '<span class="drawer-toggle-arrow"></span>';
+    var dpanel = document.createElement('div');
+    dpanel.className = 'drawer-panel';
+    cat.items.forEach(function(item) {
+      var a = document.createElement('a');
+      a.className = 'drawer-link' + (item.external ? ' ext' : '');
+      a.href = item.href;
+      a.textContent = item.label;
+      if (item.external) { a.target = '_blank'; a.rel = 'noopener'; }
+      dpanel.appendChild(a);
+    });
+    toggle.addEventListener('click', function() {
+      var isOpen = sec.classList.contains('open');
+      document.querySelectorAll('.drawer-section').forEach(function(s) {
+        s.classList.remove('open');
+        s.querySelector('.drawer-toggle').setAttribute('aria-expanded','false');
+      });
+      if (!isOpen) {
+        sec.classList.add('open');
+        toggle.setAttribute('aria-expanded','true');
+      }
+    });
+    sec.appendChild(toggle);
+    sec.appendChild(dpanel);
+    drawer.appendChild(sec);
+  });
+
+  var ctaRow = document.createElement('div');
+  ctaRow.className = 'drawer-cta-row';
+  ctaRow.innerHTML =
+    '<a class="drawer-cta-btn gold" href="mailto:nestino@nestino.pl">Zamów konsultację</a>' +
+    '<a class="drawer-cta-btn outline" href="https://franczyza.nestino.pl" target="_blank" rel="noopener">Franczyza ↗</a>';
+  drawer.appendChild(ctaRow);
+
+  var hamburger = document.getElementById('navHamburger');
+  hamburger.addEventListener('click', function() {
+    var isOpen = drawer.classList.contains('open');
+    drawer.classList.toggle('open');
+    hamburger.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    drawer.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+  });
+  drawer.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A') {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded','false');
+      drawer.setAttribute('aria-hidden','true');
+    }
+  });
+})();
+
+/* FILTRY */
+function filterReal(btn, type) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.real-card').forEach(function(card) {
+    if (type === 'all' || card.dataset.type === type) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>
