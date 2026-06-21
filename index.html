@@ -157,6 +157,16 @@ section{padding:108px 0;border-bottom:1px solid var(--n-border)}
 .real-link{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--n-gold)}
 
 /* TRUST */
+/* BLOG */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--n-border);margin-top:64px}
+@media(max-width:768px){.blog-grid{grid-template-columns:1fr}}
+.blog-card{background:var(--n-surface);padding:36px 32px;display:flex;flex-direction:column;gap:16px;transition:background 0.2s;text-decoration:none}
+.blog-card:hover{background:var(--n-surface2)}
+.blog-cat{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--n-gold-dim);font-weight:500}
+.blog-title{font-size:17px;font-weight:400;color:var(--n-white);line-height:1.4}
+.blog-excerpt{font-size:14px;color:var(--n-gray);line-height:1.75;flex:1}
+.blog-link{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--n-gold);margin-top:8px}
+/* END BLOG */
 .trust-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:64px;align-items:start}
 @media(max-width:900px){.trust-layout{grid-template-columns:1fr}}
 .certs{display:flex;flex-direction:column;gap:1px;background:var(--n-border)}
@@ -508,6 +518,38 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
     </div>
     <div style="text-align:center;margin-top:40px">
       <a class="btn-outline" href="https://nestino.pl/wybrane-realizacje" target="_blank" rel="noopener">Zobacz wszystkie realizacje →</a>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Wiedza</span></div>
+    <h2 class="section-h2">Co warto wiedzieć<br>przed decyzją.</h2>
+    <p class="section-sub">Eksperci Nestino piszą o tym, co naprawdę ma znaczenie — bez marketingowego tonu.</p>
+    <div class="blog-grid">
+      <a class="blog-card" href="https://nestino.pl/porownanie-systemow-automatyki-domowej-chmurowe-vs-kablowe/" target="_blank" rel="noopener">
+        <div class="blog-cat">Porównanie systemów</div>
+        <div class="blog-title">Chmura vs. kabel — który system inteligentnego domu wybrać?</div>
+        <div class="blog-excerpt">Systemy kablowe działają lokalnie, błyskawicznie i niezależnie od internetu i zewnętrznych serwerów. Sprawdź szczegółowe porównanie i dowiedz się, dlaczego dla domu premium wybór jest oczywisty.</div>
+        <div class="blog-link">Czytaj artykuł →</div>
+      </a>
+      <a class="blog-card" href="https://nestino.pl/inteligentny-dom-projekt-od-nestino/" target="_blank" rel="noopener">
+        <div class="blog-cat">Proces i projekt</div>
+        <div class="blog-title">Jak powstaje projekt inteligentnego domu od Nestino?</div>
+        <div class="blog-excerpt">Od rozmieszczenia elementów po programowanie automatyzacji — poznaj etapy powstawania inteligentnego domu i dowiedz się, czego możesz oczekiwać na każdym kroku współpracy.</div>
+        <div class="blog-link">Czytaj artykuł →</div>
+      </a>
+      <a class="blog-card" href="https://nestino.pl/smart-home/" target="_blank" rel="noopener">
+        <div class="blog-cat">Inwestycja i koszty</div>
+        <div class="blog-title">Smart Home — czy to się opłaca?</div>
+        <div class="blog-excerpt">Rzetelna odpowiedź na najczęściej zadawane pytanie. Funkcjonalności, które mają realny wpływ na komfort i energooszczędność — bez obietnic bez pokrycia.</div>
+        <div class="blog-link">Czytaj artykuł →</div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a class="btn-outline" href="https://nestino.pl/blog/" target="_blank" rel="noopener">Zobacz wszystkie artykuły →</a>
     </div>
   </div>
 </section>
