@@ -224,6 +224,130 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
 
 /* SVG ICONS inline */
 .ico{display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── MEGA MENU ─────────────────────────────────────────────── */
+.nav-mega{position:relative}
+.nav-mega-trigger{
+  color:var(--n-gray);text-decoration:none;font-size:13px;
+  letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;
+  cursor:default;display:flex;align-items:center;gap:5px;padding:4px 0;
+  background:none;border:none;font-family:var(--n-font);
+}
+.nav-mega-trigger:hover,.nav-mega:hover .nav-mega-trigger{color:var(--n-white)}
+.nav-mega-arrow{
+  width:0;height:0;
+  border-left:4px solid transparent;border-right:4px solid transparent;
+  border-top:4px solid currentColor;
+  display:inline-block;margin-top:1px;transition:transform 0.2s;flex-shrink:0;
+}
+.nav-mega:hover .nav-mega-arrow{transform:rotate(180deg)}
+.nav-mega-panel{
+  position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-8px);
+  background:rgba(10,10,12,0.98);
+  border:1px solid #1E1E1E;border-top:2px solid var(--n-gold);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  min-width:220px;padding:8px 0;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s,transform 0.2s;
+  z-index:200;
+}
+.nav-mega:hover .nav-mega-panel,
+.nav-mega:focus-within .nav-mega-panel{
+  opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)
+}
+.nav-mega-item{
+  display:block;padding:10px 22px;
+  color:#888;font-size:13px;text-decoration:none;
+  transition:color 0.15s,background 0.15s;white-space:nowrap;
+}
+.nav-mega-item:hover{color:#fff;background:rgba(255,255,255,0.04)}
+.nav-mega-item.ext::after{
+  content:'↗';font-size:10px;margin-left:6px;color:var(--n-gold-dim);vertical-align:super;
+}
+/* ── HAMBURGER + DRAWER ─────────────────────────────────────── */
+.nav-hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  cursor:pointer;padding:8px;background:none;border:none;
+}
+.nav-hamburger span{
+  width:22px;height:1.5px;background:var(--n-white);
+  transition:transform 0.3s,opacity 0.3s;display:block;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.nav-drawer{
+  position:fixed;inset:0;top:88px;
+  background:#080808;z-index:200;
+  overflow-y:auto;
+  transform:translateX(100%);
+  transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  border-top:1px solid var(--n-border);
+}
+.nav-drawer.open{transform:translateX(0)}
+.drawer-section{border-bottom:1px solid var(--n-border)}
+.drawer-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:18px 24px;
+  background:none;border:none;
+  color:var(--n-white);font-size:14px;letter-spacing:0.08em;
+  text-transform:uppercase;font-family:var(--n-font);cursor:pointer;
+  text-align:left;
+}
+.drawer-toggle-arrow{
+  width:0;height:0;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:5px solid var(--n-gray);transition:transform 0.25s;
+}
+.drawer-section.open .drawer-toggle-arrow{transform:rotate(180deg)}
+.drawer-panel{display:none;padding:0 0 8px}
+.drawer-section.open .drawer-panel{display:block}
+.drawer-link{
+  display:block;padding:11px 24px 11px 36px;
+  color:var(--n-gray);font-size:13px;text-decoration:none;
+  transition:color 0.15s;
+}
+.drawer-link:hover{color:var(--n-white)}
+.drawer-link.ext::after{content:' ↗';font-size:11px;color:var(--n-gold-dim)}
+.drawer-cta-row{padding:24px;display:flex;flex-direction:column;gap:12px}
+.drawer-cta-btn{
+  display:block;text-align:center;padding:14px 20px;
+  font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+  font-family:var(--n-font);text-decoration:none;transition:all 0.2s;
+}
+.drawer-cta-btn.gold{background:var(--n-gold);color:#000}
+.drawer-cta-btn.outline{border:1px solid var(--n-border);color:var(--n-gray)}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+}
+
+/* ── FAQ ──────────────────────────────────────────────────── */
+.faq-list{margin-top:64px;display:flex;flex-direction:column;gap:1px;background:var(--n-border)}
+.faq-item{background:var(--n-surface)}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:26px 32px;background:none;border:none;
+  color:var(--n-white);font-size:16px;font-family:var(--n-font);
+  font-weight:400;text-align:left;cursor:pointer;gap:16px;
+  transition:background 0.2s;
+}
+.faq-q:hover{background:var(--n-surface2)}
+.faq-q-icon{
+  width:22px;height:22px;border:1px solid var(--n-border);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;color:var(--n-gold);font-size:16px;line-height:1;
+  transition:transform 0.25s,border-color 0.25s;
+}
+.faq-item.open .faq-q-icon{transform:rotate(45deg);border-color:var(--n-gold)}
+.faq-a{
+  display:none;padding:0 32px 26px;
+  font-size:14px;color:var(--n-gray);line-height:1.8;
+  border-top:1px solid var(--n-border);padding-top:18px;
+}
+.faq-item.open .faq-a{display:block}
 </style>
 </head>
 <body>
@@ -239,15 +363,22 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
     <a class="nav-logo" href="#">
       <img src="logo.png" alt="Nestino" style="height:112px;width:auto;display:block;filter:invert(1) hue-rotate(180deg)">
     </a>
-    <ul class="nav-links">
-      <li><a href="#realizacje">Realizacje</a></li>
-      <li><a href="#proces">Jak działamy</a></li>
-      <li><a href="#showroom">Showroom</a></li>
-      <li><a href="#kontakt">O nas</a></li>
+    <ul class="nav-links" id="navLinks">
+      <!-- Mega menu generowane przez JS -->
     </ul>
-    <a class="nav-cta" href="#kontakt">Konsultacja</a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a class="nav-cta" href="#kontakt">Konsultacja</a>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
+
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <!-- Generowane przez JS -->
+</div>
 
 <div class="hero">
   <!-- Slideshow backgrounds -->
@@ -290,6 +421,9 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
     </div>
   </div>
 </div>
+
+<!-- ANCHOR dla-domu (przed segmentami) -->
+<div id="dla-domu"></div>
 
 <!-- SEGMENTY -->
 <section id="sciezki">
@@ -522,6 +656,8 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
   </div>
 </section>
 
+<!-- ANCHOR materialy -->
+<div id="materialy"></div>
 <!-- BLOG -->
 <section id="blog">
   <div class="page">
@@ -554,6 +690,8 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
   </div>
 </section>
 
+<!-- ANCHORY: showroom = zaufanie, o-nestino alias -->
+<div id="o-nestino"></div>
 <!-- ZAUFANIE -->
 <section id="showroom">
   <div class="page">
@@ -597,6 +735,62 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
   </div>
 </section>
 
+<!-- FAQ -->
+<section id="faq">
+  <div class="page">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">FAQ</span></div>
+    <h2 class="section-h2">Najczęściej zadawane<br>pytania.</h2>
+    <p class="section-sub">Odpowiedzi na pytania, które słyszymy najczęściej przed podjęciem decyzji.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Ile kosztuje inteligentny dom?</span>
+          <span class="faq-q-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          Koszt systemu Smart Home zależy od wielkości domu, liczby integrowanych urządzeń i wybranej technologii. Typowy dom 200–400 m² z pełną integracją (oświetlenie, ogrzewanie, rolety, alarm, audio) to inwestycja rzędu 60 000–180 000 zł. Oferujemy etapowanie — możesz zacząć od wybranych stref i rozbudowywać system bez wymiany infrastruktury. Bezpłatna wycena pozycyjna dostępna po konsultacji.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Jak długo trwa instalacja?</span>
+          <span class="faq-q-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          Czas realizacji zależy od etapu budowy. Dom w stanie surowym — instalację elektryczną prowadzimy równolegle z pracami budowlanymi (2–4 tygodnie prac własnych). Dom po wykończeniu — montaż urządzeń i programowanie zajmują zwykle 5–10 dni roboczych. Programowanie i szkolenie domowników to dodatkowe 1–2 dni. Koordynator projektu zarządza harmonogramem od pierwszego dnia.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Czy system działa bez internetu?</span>
+          <span class="faq-q-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          Tak — i to jest jedna z kluczowych zalet systemów kablowych, które wdrażamy (Loxone, KNX, Grenton). Centralny sterownik działa lokalnie, więc automatyzacje, scenariusze i sterowanie z paneli ściennych działają niezależnie od internetu i zewnętrznych serwerów. Internet jest potrzebny jedynie do zdalnego dostępu przez telefon. Twój dom nie zależy od chmury producenta ani od ciągłości łącza.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Czy mogę rozbudować system po instalacji?</span>
+          <span class="faq-q-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          Tak — systemy, które instalujemy, są zaprojektowane z myślą o rozbudowie. Możesz dodawać nowe urządzenia, strefy i scenariusze bez wymiany instalacji. Zalecamy jednak, by już na etapie projektu zaplanować przepusty i rezerwy w rozdzielnicy — to minimalizuje koszty przyszłej rozbudowy. Serwis i rozbudowy wykonujemy przez cały cykl życia systemu.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Jak wygląda serwis i wsparcie po instalacji?</span>
+          <span class="faq-q-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          Każdy projekt objęty jest gwarancją oraz dostępem do zdalnej diagnostyki — nasz team widzi stan systemu i może zainterweniować bez wizyty u Ciebie. Posiadamy 4 fizyczne biura w Polsce, a najbliższe jest w Krakowie. Szkolenie domowników wchodzi w skład każdego projektu (nagranie wideo na pamiątkę). Po wygaśnięciu gwarancji oferujemy umowy serwisowe i aktualizacje oprogramowania.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FINAL CTA -->
 <div id="kontakt" style="border-bottom:1px solid var(--n-border)">
   <div class="final-cta page">
@@ -633,6 +827,7 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
     <div>
       <div class="footer-col-title">Ścieżki</div>
       <ul class="footer-links">
+        <li><a href="#dla-domu">Inteligentny dom premium</a></li>
         <li><a href="#sciezki">Klient premium</a></li>
         <li><a href="#sciezki">Architekt</a></li>
         <li><a href="https://franczyza.nestino.pl" target="_blank" rel="noopener">Franczyza <svg class="ico" width="11" height="11" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></li>
@@ -644,16 +839,20 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
         <li><a href="#realizacje">Realizacje</a></li>
         <li><a href="#proces">Jak działamy</a></li>
         <li><a href="#showroom">Showroom</a></li>
-        <li><a href="https://nestino.pl/o-nas" target="_blank" rel="noopener">O Nestino</a></li>
-        <li><a href="https://nestino.pl/blog" target="_blank" rel="noopener">Blog</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#o-nestino">O Nestino</a></li>
+        <li><a href="#materialy">Materiały / Blog</a></li>
       </ul>
     </div>
     <div>
-      <div class="footer-col-title">Certyfikaty</div>
+      <div class="footer-col-title">Rozwiązania</div>
       <ul class="footer-links">
-        <li><a href="#">KNX Certified</a></li>
-        <li><a href="#">Loxone Gold</a></li>
-        <li><a href="#">Grenton Premium</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/inteligentne-oswietlenie/" target="_blank" rel="noopener">Oświetlenie</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/automatyczne-rolety/" target="_blank" rel="noopener">Rolety i żaluzje</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/alarm-i-monitoring/" target="_blank" rel="noopener">Alarm i monitoring</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/inteligentne-ogrzewanie-i-klimatyzacja/" target="_blank" rel="noopener">Ogrzewanie</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/multimedia-i-agd/" target="_blank" rel="noopener">Multimedia</a></li>
+        <li><a href="https://nestino.pl/rozwiazania/inteligentny-ogrod/" target="_blank" rel="noopener">Ogród</a></li>
       </ul>
     </div>
   </div>
@@ -664,6 +863,188 @@ footer{background:var(--n-surface);border-top:1px solid var(--n-border);padding:
 </footer>
 
 <script>
+/* ── MEGA MENU DATA + BUILD ────────────────────────────────── */
+(function(){
+  var MENU = [
+    {
+      label: 'Dla domu',
+      items: [
+        { label: 'Inteligentny dom premium', href: '#dla-domu' },
+        { label: 'Buduję dom', href: '#sciezki' },
+        { label: 'Wykańczam dom', href: '#sciezki' },
+        { label: 'Modernizuję dom', href: '#sciezki' },
+        { label: 'Proces współpracy', href: '#proces' },
+        { label: 'Showroom Nestino', href: '#showroom' },
+        { label: 'FAQ inwestora', href: '#faq' },
+      ]
+    },
+    {
+      label: 'Rozwiązania',
+      items: [
+        { label: 'Sterowanie oświetleniem', href: 'https://nestino.pl/rozwiazania/inteligentne-oswietlenie/', external: true },
+        { label: 'Rolety, żaluzje i bramy', href: 'https://nestino.pl/rozwiazania/automatyczne-rolety/', external: true },
+        { label: 'Alarm i monitoring', href: 'https://nestino.pl/rozwiazania/alarm-i-monitoring/', external: true },
+        { label: 'Ogrzewanie i klimatyzacja', href: 'https://nestino.pl/rozwiazania/inteligentne-ogrzewanie-i-klimatyzacja/', external: true },
+        { label: 'Wentylacja i rekuperacja', href: 'https://nestino.pl/rozwiazania/wentylacja-i-rekuperacja/', external: true },
+        { label: 'Multimedia i audio', href: 'https://nestino.pl/rozwiazania/multimedia-i-agd/', external: true },
+        { label: 'Ogród i nawadnianie', href: 'https://nestino.pl/rozwiazania/inteligentny-ogrod/', external: true },
+      ]
+    },
+    {
+      label: 'Realizacje',
+      items: [
+        { label: 'Wszystkie realizacje', href: '#realizacje' },
+        { label: 'Domy premium', href: '#realizacje' },
+        { label: 'Apartamenty i rezydencje', href: '#realizacje' },
+        { label: 'Opinie klientów', href: '#showroom' },
+      ]
+    },
+    {
+      label: 'Dla architektów',
+      items: [
+        { label: 'Współpraca z architektami', href: '#sciezki' },
+        { label: 'Koordynacja branżowa', href: '#sciezki' },
+        { label: 'Materiały dla architekta', href: '#materialy' },
+        { label: 'Umów rozmowę projektową', href: '#kontakt' },
+      ]
+    },
+    {
+      label: 'Franczyza',
+      items: [
+        { label: 'Model franczyzowy Nestino', href: 'https://franczyza.nestino.pl', external: true },
+        { label: 'Dla kogo jest franczyza', href: '#sciezki' },
+        { label: 'Showroom w swoim regionie', href: '#sciezki' },
+        { label: 'Zgłoś się do rozmowy', href: '#kontakt' },
+      ]
+    },
+    {
+      label: 'Materiały',
+      items: [
+        { label: 'Blog', href: '#blog' },
+        { label: 'Poradniki Smart Home', href: 'https://nestino.pl/blog/', external: true },
+        { label: 'FAQ', href: '#faq' },
+        { label: 'O Nestino', href: '#o-nestino' },
+      ]
+    },
+  ];
+
+  /* Build desktop mega menu */
+  var navLinks = document.getElementById('navLinks');
+  MENU.forEach(function(cat) {
+    var li = document.createElement('li');
+    li.className = 'nav-mega';
+
+    var btn = document.createElement('button');
+    btn.className = 'nav-mega-trigger';
+    btn.innerHTML = cat.label + '<span class="nav-mega-arrow"></span>';
+    btn.setAttribute('aria-haspopup','true');
+    btn.setAttribute('aria-expanded','false');
+
+    var panel = document.createElement('div');
+    panel.className = 'nav-mega-panel';
+    panel.setAttribute('role','menu');
+
+    cat.items.forEach(function(item) {
+      var a = document.createElement('a');
+      a.className = 'nav-mega-item' + (item.external ? ' ext' : '');
+      a.href = item.href;
+      a.textContent = item.label;
+      if (item.external) { a.target = '_blank'; a.rel = 'noopener'; }
+      a.setAttribute('role','menuitem');
+      panel.appendChild(a);
+    });
+
+    li.appendChild(btn);
+    li.appendChild(panel);
+    navLinks.appendChild(li);
+  });
+
+  /* Build mobile drawer */
+  var drawer = document.getElementById('navDrawer');
+  MENU.forEach(function(cat) {
+    var sec = document.createElement('div');
+    sec.className = 'drawer-section';
+
+    var toggle = document.createElement('button');
+    toggle.className = 'drawer-toggle';
+    toggle.innerHTML = cat.label + '<span class="drawer-toggle-arrow"></span>';
+
+    var dpanel = document.createElement('div');
+    dpanel.className = 'drawer-panel';
+
+    cat.items.forEach(function(item) {
+      var a = document.createElement('a');
+      a.className = 'drawer-link' + (item.external ? ' ext' : '');
+      a.href = item.href;
+      a.textContent = item.label;
+      if (item.external) { a.target = '_blank'; a.rel = 'noopener'; }
+      dpanel.appendChild(a);
+    });
+
+    toggle.addEventListener('click', function() {
+      var isOpen = sec.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.drawer-section').forEach(function(s) {
+        s.classList.remove('open');
+        s.querySelector('.drawer-toggle').setAttribute('aria-expanded','false');
+      });
+      if (!isOpen) {
+        sec.classList.add('open');
+        toggle.setAttribute('aria-expanded','true');
+      }
+    });
+
+    sec.appendChild(toggle);
+    sec.appendChild(dpanel);
+    drawer.appendChild(sec);
+  });
+
+  // CTA row in drawer
+  var ctaRow = document.createElement('div');
+  ctaRow.className = 'drawer-cta-row';
+  ctaRow.innerHTML =
+    '<a class="drawer-cta-btn gold" href="#kontakt">Zamów konsultację</a>' +
+    '<a class="drawer-cta-btn outline" href="https://franczyza.nestino.pl" target="_blank" rel="noopener">Franczyza ↗</a>';
+  drawer.appendChild(ctaRow);
+
+  /* Hamburger toggle */
+  var hamburger = document.getElementById('navHamburger');
+  hamburger.addEventListener('click', function() {
+    var isOpen = drawer.classList.contains('open');
+    drawer.classList.toggle('open');
+    hamburger.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    drawer.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+  });
+
+  /* Close drawer on link click */
+  drawer.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A' && e.target.href.indexOf('#') !== -1) {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded','false');
+      drawer.setAttribute('aria-hidden','true');
+    }
+  });
+})();
+
+/* ── FAQ ACCORDION ─────────────────────────────────────────── */
+document.querySelectorAll('.faq-q').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var item = this.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(function(i) {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded','false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      this.setAttribute('aria-expanded','true');
+    }
+  });
+});
+
 // Hero slideshow
 (function(){
   var slides = document.querySelectorAll('.hero-slide');
